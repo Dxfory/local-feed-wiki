@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "classify-v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["items"],
+  "properties": {
+    "items": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "topic", "bucket", "reason", "claims"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32,
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "topic": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "bucket": {
+            "enum": ["must", "recommend", "skip"]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 800
+          },
+          "claims": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "claim_key",
+                "sentence",
+                "stance",
+                "evidence_kind",
+                "evidence_quote",
+                "comment_index"
+              ],
+              "properties": {
+                "claim_key": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "sentence": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 400
+                },
+                "stance": {
+                  "enum": ["for", "against"]
+                },
+                "evidence_kind": {
+                  "enum": ["title", "body", "comment"]
+                },
+                "evidence_quote": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 300
+                },
+                "comment_index": {
+                  "description": "comment 证据时是本次 prompt audience 的 0 起始下标，上界是该条 audience 的长度减一。title 和 body 必须为 null。",
+                  "anyOf": [
+                    {"type": "integer", "minimum": 0},
+                    {"type": "null"}
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

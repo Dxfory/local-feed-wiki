@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "second-brain://review/schema.json",
+  "title": "review-v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["topics"],
+  "properties": {
+    "topics": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["topic", "sentences"],
+        "properties": {
+          "topic": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "sentences": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 8,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "text", "item_ids"],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": ["consensus", "difference", "audience", "limit"]
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 300
+                },
+                "item_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 32,
+                    "maxLength": 32,
+                    "pattern": "^[0-9a-f]{32}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

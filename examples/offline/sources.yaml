@@ -1,0 +1,20 @@
+# Synthetic offline demo. These file fixtures never leave the checkout.
+sources:
+  - id: example-blog
+    kind: file
+    file_format: rss
+    url: file:tests/fixtures/rss/feed.xml
+    title: 合成博客
+    backfill_days: 14
+  - id: example-podcast
+    kind: file
+    file_format: podcast_json
+    url: file:tests/fixtures/podcast/episodes.json
+    title: 合成播客
+    backfill_days: 14
+  - id: example-youtube
+    kind: file
+    file_format: youtube_rss
+    url: file:tests/fixtures/youtube/feed.xml
+    title: 合成频道
+    backfill_days: 14

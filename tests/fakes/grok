@@ -1,0 +1,713 @@
+#!/usr/bin/env python3
+"""Offline stand-in for the grok CLI.
+
+SECOND_BRAIN_GROK_SCENARIO selects a fixture. It is not a CLI flag.
+The process installs its own network and subprocess tripwire, reads the
+prompt file, and writes one stdout envelope unless a rejection scenario
+asks for a broken stream. A ``.json`` prompt file is ACP content blocks.
+An object without a string ``type`` exits nonzero, matching grok 1.0.46.
+``--json-schema`` is the schema JSON text, not a file path. A successful
+envelope names the schema object ``structuredOutput``.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import stat
+import sys
+import time
+from typing import NoReturn
+
+SECRET = "SUPERSECRET"
+LIMIT = 2 * 1024 * 1024
+
+
+def _help_requested(argv: list[str]) -> bool:
+    return len(argv) >= 2 and argv[1] == "--help" and "--prompt-file" not in argv
+
+
+def main() -> None:
+    try:
+        install_tripwire()
+        if _help_requested(sys.argv):
+            write_log("help")
+            if os.environ.get("SECOND_BRAIN_GROK_HELP_STATUS", "") == "fail":
+                sys.stderr.buffer.write(f"help_failed token={SECRET}\n".encode("ascii"))
+                raise SystemExit(2)
+            text = os.environ.get("SECOND_BRAIN_GROK_HELP", "")
+            data = text.encode("utf-8")
+            if data and not data.endswith(b"\n"):
+                data += b"\n"
+            sys.stdout.buffer.write(data)
+            return
+        scenario = os.environ.get("SECOND_BRAIN_GROK_SCENARIO", "")
+        write_log(scenario)
+        run_scenario(scenario)
+    except SystemExit:
+        raise
+    except Exception:
+        sys.stderr.buffer.write(b"fake_failed\n")
+        sys.stdout.buffer.write(b'{"type":"error"}')
+        raise SystemExit(1) from None
+
+
+def install_tripwire() -> None:
+    import socket
+    import subprocess
+    import urllib.request
+
+    def block(kind: str):
+        def blocked(*_args, **_kwargs):
+            raise RuntimeError(f"network tripwire: {kind}")
+
+        blocked.__tripwire__ = kind  # type: ignore[attr-defined]
+        return blocked
+
+    socket.socket.connect = block("socket.connect")
+    socket.socket.connect_ex = block("socket.connect_ex")
+    socket.create_connection = block("socket.create_connection")
+    socket.getaddrinfo = block("socket.getaddrinfo")
+    urllib.request.urlopen = block("urllib.request.urlopen")
+    urllib.request.OpenerDirector.open = block("urllib.request.OpenerDirector.open")
+    subprocess.Popen = block("subprocess.Popen")
+    subprocess.run = block("subprocess.run")
+    subprocess.call = block("subprocess.call")
+    subprocess.check_call = block("subprocess.check_call")
+    subprocess.check_output = block("subprocess.check_output")
+    os.system = block("os.system")
+    os.popen = block("os.popen")
+
+
+def probe() -> list[str]:
+    import socket
+    import subprocess
+    import urllib.request
+
+    checks = (
+        ("socket.connect", lambda: socket.socket.connect, lambda: socket.socket().connect(("127.0.0.1", 9))),
+        ("socket.connect_ex", lambda: socket.socket.connect_ex, lambda: socket.socket().connect_ex(("127.0.0.1", 9))),
+        (
+            "socket.create_connection",
+            lambda: socket.create_connection,
+            lambda: socket.create_connection(("127.0.0.1", 9)),
+        ),
+        ("socket.getaddrinfo", lambda: socket.getaddrinfo, lambda: socket.getaddrinfo("example.invalid", 80)),
+        ("urllib.request.urlopen", lambda: urllib.request.urlopen, lambda: urllib.request.urlopen("http://127.0.0.1/")),
+        (
+            "urllib.request.OpenerDirector.open",
+            lambda: urllib.request.OpenerDirector.open,
+            lambda: urllib.request.OpenerDirector().open("http://127.0.0.1/"),
+        ),
+        ("subprocess.Popen", lambda: subprocess.Popen, lambda: subprocess.Popen(["/bin/true"])),
+        ("subprocess.run", lambda: subprocess.run, lambda: subprocess.run(["/bin/true"], check=False)),
+        ("subprocess.call", lambda: subprocess.call, lambda: subprocess.call(["/bin/true"])),
+        ("subprocess.check_call", lambda: subprocess.check_call, lambda: subprocess.check_call(["/bin/true"])),
+        ("subprocess.check_output", lambda: subprocess.check_output, lambda: subprocess.check_output(["/bin/true"])),
+        ("os.system", lambda: os.system, lambda: os.system("true")),
+        ("os.popen", lambda: os.popen, lambda: os.popen("true")),
+    )
+    blocked: list[str] = []
+    for kind, getter, action in checks:
+        fn = getter()
+        if getattr(fn, "__tripwire__", None) != kind:
+            return []
+        try:
+            action()
+        except RuntimeError as exc:
+            if str(exc) != f"network tripwire: {kind}":
+                return []
+        else:
+            return []
+        blocked.append(kind)
+    return blocked
+
+
+def flag(argv: list[str], name: str) -> str | None:
+    for index, item in enumerate(argv):
+        if item == name and index + 1 < len(argv):
+            return argv[index + 1]
+    return None
+
+
+def mode_of(path: str | None) -> int | None:
+    if not path:
+        return None
+    try:
+        return stat.S_IMODE(os.stat(path).st_mode)
+    except OSError:
+        return None
+
+
+def sha_of(path: str | None) -> str | None:
+    if not path:
+        return None
+    try:
+        digest = hashlib.sha256()
+        with open(path, "rb") as handle:
+            digest.update(handle.read())
+        return digest.hexdigest()
+    except OSError:
+        return None
+
+
+def schema_log(raw: str | None) -> tuple[int | None, str | None]:
+    """Mode and sha256 for ``--json-schema``.
+
+    Inline JSON text matches grok 1.0.46: there is no schema file, so the
+    mode is absent and the hash covers the argument bytes. A non-JSON value
+    is recorded as a path so a regression back to a file path stays visible.
+    """
+
+    if raw is None:
+        return None, None
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        parsed = None
+    if isinstance(parsed, dict):
+        return None, hashlib.sha256(raw.encode("utf-8")).hexdigest()
+    return mode_of(raw), sha_of(raw)
+
+
+def write_log(scenario: str) -> None:
+    path = os.environ.get("SECOND_BRAIN_GROK_ARGV_LOG")
+    if not path:
+        return
+    prompt_file = flag(sys.argv, "--prompt-file")
+    schema_mode, schema_sha = schema_log(flag(sys.argv, "--json-schema"))
+    record = {
+        "argv": sys.argv,
+        "cwd": os.getcwd(),
+        "cwd_entries": sorted(os.listdir(os.getcwd())),
+        "prompt_mode": mode_of(prompt_file),
+        "schema_mode": schema_mode,
+        "prompt_dir_mode": mode_of(os.path.dirname(prompt_file)) if prompt_file else None,
+        "prompt_sha256": sha_of(prompt_file),
+        "schema_sha256": schema_sha,
+        "env_keys": sorted(os.environ),
+        "scenario": scenario,
+    }
+    line = json.dumps(record, ensure_ascii=False, separators=(",", ":")).encode("utf-8") + b"\n"
+    fd = os.open(path, os.O_APPEND | os.O_CREAT | os.O_WRONLY, 0o600)
+    try:
+        os.write(fd, line)
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def write_bytes(data: bytes) -> None:
+    sys.stdout.buffer.write(data)
+    sys.stdout.buffer.flush()
+
+
+def write_json(value: object) -> None:
+    write_bytes(json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+
+
+def fail() -> None:
+    write_bytes(b'{"type":"error"}')
+    raise SystemExit(1)
+
+
+def base_usage(**extra: object) -> dict[str, object]:
+    usage: dict[str, object] = {
+        "input_tokens": 11,
+        "output_tokens": 7,
+        "reasoning_tokens": 3,
+        "cache_read_input_tokens": 1,
+        "cache_creation_input_tokens": 0,
+        "note": SECRET,
+    }
+    usage.update(extra)
+    return usage
+
+
+def emit(
+    payload: object,
+    *,
+    mode: str = "structured",
+    stop: str = "end_turn",
+    usage: dict[str, object] | None = None,
+    include_stop: bool = True,
+    stop_null: bool = False,
+) -> None:
+    if usage is None:
+        usage = base_usage()
+    envelope: dict[str, object] = {
+        "sessionId": "session-" + SECRET,
+        "usage": usage,
+    }
+    if stop_null:
+        envelope["stopReason"] = None
+    elif include_stop:
+        envelope["stopReason"] = stop
+    encoded = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    if mode == "structured":
+        envelope["structuredOutput"] = payload
+        envelope["text"] = json.dumps({"id": "decoy"}, separators=(",", ":"))
+    elif mode == "text":
+        envelope["text"] = encoded
+    elif mode == "fence":
+        envelope["text"] = "```json\n" + encoded + "\n```"
+    elif mode == "null_structured":
+        envelope["structuredOutput"] = None
+        envelope["text"] = encoded
+    elif mode == "empty_structured":
+        envelope["structuredOutput"] = {}
+        envelope["text"] = encoded
+    else:
+        fail()
+    write_json(envelope)
+
+
+_TYPE_REQUIRED = (
+    'JSON object must have a "type" field '
+    '(e.g., {"type": "acp", "content": [...]})'
+)
+_PROMPT_TEXT: str | None = None
+_PROMPT_READY = False
+
+
+def reject_prompt(path: str, message: str) -> NoReturn:
+    sys.stderr.buffer.write(f"Error: '{path}': {message}\n".encode("utf-8"))
+    raise SystemExit(1)
+
+
+def read_prompt_text(path: str) -> str:
+    """Return the prompt text grok 1.0.46 would take from ``--prompt-file``.
+
+    ``.json`` is parsed as ACP blocks. Any other extension is plain text.
+    """
+
+    try:
+        with open(path, "rb") as handle:
+            raw = handle.read()
+    except OSError:
+        reject_prompt(path, f"Failed to read '{path}'")
+    if not path.endswith(".json"):
+        try:
+            text = raw.decode("utf-8").strip()
+        except UnicodeError:
+            reject_prompt(path, f"Failed to read '{path}'")
+        if text == "":
+            reject_prompt(path, "prompt is empty")
+        return text
+    try:
+        value = json.loads(raw.decode("utf-8"))
+    except UnicodeError:
+        reject_prompt(path, "Invalid JSON")
+    except json.JSONDecodeError as exc:
+        reject_prompt(path, f"Invalid JSON: {exc}")
+    blocks = content_blocks(value, path)
+    if len(blocks) == 0:
+        reject_prompt(path, "content blocks array is empty")
+    return "".join(text_block(block, path) for block in blocks)
+
+
+def content_blocks(value: object, path: str) -> list[object]:
+    if isinstance(value, list):
+        return value
+    if not isinstance(value, dict):
+        reject_prompt(
+            path,
+            'Expected JSON array or {"type": "...", "content": [...]} object',
+        )
+    format_type = value.get("type")
+    if not isinstance(format_type, str):
+        reject_prompt(path, _TYPE_REQUIRED)
+    if "content" not in value:
+        reject_prompt(path, 'JSON object must have a "content" field')
+    if format_type != "acp":
+        reject_prompt(
+            path,
+            f'Unsupported prompt format type: "{format_type}". Supported types: "acp"',
+        )
+    content = value["content"]
+    if not isinstance(content, list):
+        reject_prompt(path, 'Invalid ACP content blocks in "content"')
+    return content
+
+
+def text_block(block: object, path: str) -> str:
+    if not isinstance(block, dict):
+        reject_prompt(path, "Invalid ACP content blocks")
+    block_type = block.get("type")
+    text = block.get("text")
+    if not isinstance(block_type, str):
+        reject_prompt(path, _TYPE_REQUIRED)
+    if block_type != "text" or not isinstance(text, str):
+        reject_prompt(path, "Invalid ACP content blocks")
+    return text
+
+
+def ensure_prompt_file() -> None:
+    global _PROMPT_TEXT, _PROMPT_READY
+    if _PROMPT_READY:
+        return
+    _PROMPT_READY = True
+    path = flag(sys.argv, "--prompt-file")
+    if path is None:
+        return
+    _PROMPT_TEXT = read_prompt_text(path)
+
+
+def read_prompt() -> dict[str, object] | None:
+    ensure_prompt_file()
+    if _PROMPT_TEXT is None:
+        return None
+    try:
+        value = json.loads(_PROMPT_TEXT)
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(value, dict):
+        return None
+    return value
+
+
+def _ids(items: object) -> list[str] | None:
+    if not isinstance(items, list):
+        return None
+    found: list[str] = []
+    for item in items:
+        if not isinstance(item, dict) or not isinstance(item.get("id"), str):
+            return None
+        found.append(item["id"])
+    return found
+
+
+def demo_payload(prompt: dict[str, object]) -> dict[str, object] | None:
+    task = prompt.get("task")
+    if task == "classify-v3":
+        ids = _ids(prompt.get("items"))
+        if ids is None:
+            return None
+        return {
+            "items": [
+                {
+                    "id": item_id,
+                    "topic": "离线",
+                    "bucket": "recommend",
+                    "reason": "离线合成结果",
+                    "claims": [],
+                }
+                for item_id in ids
+            ]
+        }
+    if task == "review-v3":
+        topics = prompt.get("topics")
+        if not isinstance(topics, list):
+            return None
+        built: list[dict[str, object]] = []
+        for topic in topics:
+            if not isinstance(topic, dict) or not isinstance(topic.get("topic"), str):
+                return None
+            rows = topic.get("items")
+            if not isinstance(rows, list):
+                return None
+            ids: list[str] = []
+            audience_ids: list[str] = []
+            for row in rows:
+                if not isinstance(row, dict) or not isinstance(row.get("id"), str):
+                    return None
+                ids.append(row["id"])
+                if row.get("audience"):
+                    audience_ids.append(row["id"])
+            sentences: list[dict[str, object]] = [
+                {
+                    "kind": "consensus",
+                    "text": "离线合成结果只复述所列材料。",
+                    "item_ids": ids,
+                },
+                {
+                    "kind": "difference",
+                    "text": "所选材料未提供可确认的分歧。",
+                    "item_ids": ids,
+                },
+            ]
+            if audience_ids:
+                sentences.append(
+                    {
+                        "kind": "audience",
+                        "text": "观众文字仅作离线占位。",
+                        "item_ids": audience_ids,
+                    }
+                )
+            built.append({"topic": topic["topic"], "sentences": sentences})
+        return {"topics": built}
+    return None
+
+
+def prompt_payload() -> dict[str, object]:
+    loaded = read_prompt()
+    payload = demo_payload(loaded) if isinstance(loaded, dict) else None
+    if payload is None:
+        fail()
+    return payload
+
+
+def write_x(count: int) -> None:
+    chunk = b"x" * 65536
+    left = count
+    while left > 0:
+        piece = chunk if left >= len(chunk) else b"x" * left
+        sys.stdout.buffer.write(piece)
+        sys.stdout.buffer.flush()
+        left -= len(piece)
+
+
+def ensure_schema() -> None:
+    """Reject a ``--json-schema`` value grok 1.0.46 would not parse.
+
+    A file path fails with the same stderr line observed on 2026-11-11:
+    ``invalid JSON: expected value at line 1 column 1``.
+    """
+
+    raw = flag(sys.argv, "--json-schema")
+    if raw is None:
+        return
+    try:
+        value = json.loads(raw)
+    except json.JSONDecodeError:
+        sys.stderr.buffer.write(
+            b"Error: --json-schema: invalid JSON: expected value at line 1 column 1\n"
+        )
+        raise SystemExit(1)
+    if not isinstance(value, dict):
+        sys.stderr.buffer.write(b"Error: --json-schema: invalid JSON: expected object\n")
+        raise SystemExit(1)
+
+
+def run_scenario(scenario: str) -> None:
+    ensure_schema()
+    ensure_prompt_file()
+    if scenario == "timeout":
+        time.sleep(30)
+        return
+    if scenario == "huge":
+        write_x(LIMIT + 1)
+        return
+    if scenario == "pad":
+        write_x(LIMIT)
+        return
+    if scenario == "network_probe":
+        emit({"blocked": probe()})
+        return
+    if scenario == "plain":
+        write_bytes(b'{"items":[]}')
+        return
+    if scenario == "items_stop":
+        write_bytes(b'{"items":[],"stopReason":"end_turn"}')
+        return
+    if scenario == "multi":
+        write_bytes(b'{"stopReason":"end_turn"}\n{"stopReason":"end_turn"}')
+        return
+    if scenario == "prose":
+        sys.stderr.buffer.write(SECRET.encode("ascii"))
+        write_bytes(f"note {SECRET}\n".encode("ascii"))
+        write_bytes(b'{"text":"{}","stopReason":"end_turn"}\n')
+        write_bytes(f"thanks {SECRET}\n".encode("ascii"))
+        return
+    if scenario == "array":
+        write_bytes(b"[1,2]")
+        return
+    if scenario == "null_stdout":
+        write_bytes(b"null")
+        return
+    if scenario == "duplicate":
+        write_bytes(
+            b'{"text":"{\\"items\\":[]}","usage":{"input_tokens":1},'
+            b'"text":"{\\"items\\":[{\\"id\\":\\"second\\"}]}","stopReason":"end_turn"}'
+        )
+        return
+    if scenario == "nan":
+        write_json(
+            {
+                "text": '{"value": NaN}',
+                "stopReason": "end_turn",
+                "usage": base_usage(),
+                "sessionId": "session-" + SECRET,
+            }
+        )
+        return
+    if scenario == "nan_envelope":
+        write_json(
+            {
+                "structuredOutput": {"value": float("nan")},
+                "stopReason": "end_turn",
+                "usage": {"input_tokens": 1},
+            }
+        )
+        return
+    if scenario == "error":
+        sys.stderr.buffer.write(SECRET.encode("ascii"))
+        write_json(
+            {
+                "type": "error",
+                "message": SECRET,
+                "sessionId": "session-" + SECRET,
+                "usage": {"input_tokens": 4, "total_cost_usd": "1.25", "note": SECRET},
+            }
+        )
+        return
+    if scenario == "fence_preamble":
+        write_json(
+            {
+                "text": "说明\n```json\n{\"a\": 1}\n```\n尾注",
+                "stopReason": "end_turn",
+                "usage": base_usage(),
+                "sessionId": "session-" + SECRET,
+            }
+        )
+        return
+    if scenario == "prefer":
+        emit({"via": "structured"})
+        return
+    if scenario == "bad_structured_list":
+        write_json(
+            {
+                "structuredOutput": ["not-object"],
+                "text": "{\"via\":\"text\"}",
+                "stopReason": "end_turn",
+                "usage": base_usage(),
+                "sessionId": "session-" + SECRET,
+            }
+        )
+        return
+    if scenario == "bad_structured_string":
+        write_json(
+            {
+                "structuredOutput": "{\"via\":\"text\"}",
+                "text": "{\"via\":\"text\"}",
+                "stopReason": "end_turn",
+                "usage": base_usage(),
+                "sessionId": "session-" + SECRET,
+            }
+        )
+        return
+    if scenario == "null_structured":
+        emit({"via": "text"}, mode="null_structured")
+        return
+    if scenario == "empty_structured":
+        emit({"via": "text"}, mode="empty_structured")
+        return
+    payload = prompt_payload()
+    if scenario in {"", "structured", "missing_cost"}:
+        emit(payload)
+        return
+    if scenario == "text":
+        emit(payload, mode="text")
+        return
+    if scenario == "fence":
+        emit(payload, mode="fence")
+        return
+    if scenario == "missing_usage":
+        write_json(
+            {
+                "structuredOutput": payload,
+                "text": json.dumps({"id": "decoy"}, separators=(",", ":")),
+                "stopReason": "end_turn",
+                "sessionId": "session-" + SECRET,
+            }
+        )
+        return
+    if scenario == "missing_stop":
+        emit(payload, include_stop=False)
+        return
+    if scenario == "null_stop":
+        emit(payload, stop_null=True)
+        return
+    if scenario == "with_cost":
+        emit(payload, usage=base_usage(total_cost_usd="0.13"))
+        return
+    if scenario == "zero_cost":
+        emit(payload, usage=base_usage(total_cost_usd="0"))
+        return
+    if scenario == "float_cost":
+        emit(payload, usage=base_usage(total_cost_usd=0.13))
+        return
+    if scenario == "bad_cost":
+        emit(payload, usage=base_usage(total_cost_usd="-0.01"))
+        return
+    if scenario == "negative_tokens":
+        emit(payload, usage=base_usage(input_tokens=-1))
+        return
+    if scenario == "bool_token":
+        emit(payload, usage=base_usage(input_tokens=True))
+        return
+    if scenario == "string_tokens":
+        emit(payload, usage=base_usage(input_tokens="11"))
+        return
+    if scenario == "nonzero":
+        sys.stderr.buffer.write(SECRET.encode("ascii"))
+        emit(payload, mode="text", usage=base_usage(total_cost_usd="2.50"))
+        raise SystemExit(7)
+    if scenario == "nonzero_stderr":
+        sys.stderr.buffer.write(
+            (
+                f"unknown flag --no-auto-update token={SECRET}\n"
+                f"tail-line {SECRET} bearer sk-live-ABCDEFGH12345678\n"
+            ).encode("utf-8")
+        )
+        emit(payload, mode="text", usage=base_usage(total_cost_usd="2.50"))
+        raise SystemExit(7)
+    if scenario == "bad_stop":
+        sys.stderr.buffer.write(SECRET.encode("ascii"))
+        emit(payload, stop="max_turns", usage=base_usage(total_cost_usd="0.20"))
+        return
+    if scenario == "stop_space":
+        sys.stderr.buffer.write(SECRET.encode("ascii"))
+        emit(payload, stop="end_turn ")
+        return
+    if scenario == "bool_payload":
+        emit({"ok": True})
+        return
+    if scenario == "nul_payload":
+        emit({"text": "a\x00b"})
+        return
+    if scenario == "tick_cost":
+        payload = prompt_payload()
+        write_json(
+            {
+                "text": json.dumps({"id": "decoy"}, separators=(",", ":")),
+                "stopReason": "end_turn",
+                "sessionId": "session-" + SECRET,
+                "usage": base_usage(),
+                "structuredOutput": payload,
+                "structured_output": {"via": "snake"},
+                "num_turns": 1,
+                "total_cost_usd": 0.01290096,
+                "total_cost_usd_ticks": 129009600,
+            }
+        )
+        return
+    if scenario == "float_top_cost":
+        payload = prompt_payload()
+        write_json(
+            {
+                "text": json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
+                "stopReason": "end_turn",
+                "usage": base_usage(),
+                "structuredOutput": payload,
+                "total_cost_usd": 0.01290096,
+            }
+        )
+        return
+    if scenario == "snake_structured":
+        payload = prompt_payload()
+        write_json(
+            {
+                "text": json.dumps({"id": "decoy"}, separators=(",", ":")),
+                "stopReason": "end_turn",
+                "usage": base_usage(),
+                "structured_output": payload,
+            }
+        )
+        return
+    fail()
+
+
+if __name__ == "__main__":
+    main()

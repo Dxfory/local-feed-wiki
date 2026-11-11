@@ -1,0 +1,23 @@
+# Public feeds only. Copy to config/sources.yaml and edit. That copy stays gitignored.
+# Offline runs reject every non-file source. Use examples/offline for the synthetic demo.
+sources:
+  - id: hacker-news
+    kind: rss
+    url: https://hnrss.org/frontpage
+    title: Hacker News
+    backfill_days: 14
+  - id: bbc-world
+    kind: rss
+    url: https://feeds.bbci.co.uk/news/world/rss.xml
+    title: BBC World
+    backfill_days: 14
+  - id: planet-money
+    kind: podcast_rss
+    url: https://feeds.npr.org/510289/podcast.xml
+    title: Planet Money
+    backfill_days: 14
+  - id: youtube-google-developers
+    kind: youtube_rss
+    url: https://www.youtube.com/feeds/videos.xml?channel_id=UC_x5XG1OV2P6uZZ5FSM9Ttw
+    title: Google Developers
+    backfill_days: 14

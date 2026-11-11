@@ -1,0 +1,48 @@
+{
+  "multi_topic": "增长对照",
+  "single_topic": "单源材料",
+  "multi": [
+    {
+      "source_id": "beta",
+      "title": "乙源标题",
+      "bucket": "recommend",
+      "reason": "乙源只写了区间",
+      "comments": [],
+      "policy_mark": "b"
+    },
+    {
+      "source_id": "alpha",
+      "title": "甲源标题",
+      "bucket": "must",
+      "reason": "甲源写了全年增长",
+      "comments": ["观众说要看分季"],
+      "policy_mark": "a",
+      "claim": {
+        "claim_key": "机构A|需求同比增长|2030年度|业务B",
+        "sentence": "2030年度业务B需求将同比增长",
+        "stance": "for",
+        "evidence_kind": "comment",
+        "evidence_quote": "观众说要看分季",
+        "comment_index": 0
+      }
+    }
+  ],
+  "single": [
+    {
+      "source_id": "alpha",
+      "title": "同题第二条",
+      "bucket": "skip",
+      "reason": "第二条没有新来源",
+      "comments": [],
+      "policy_mark": "c"
+    },
+    {
+      "source_id": "alpha",
+      "title": "同题第一条",
+      "bucket": "must",
+      "reason": "第一条仍是同一来源",
+      "comments": ["观众甲"],
+      "policy_mark": "d"
+    }
+  ]
+}

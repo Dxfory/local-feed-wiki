@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns:y="http://www.youtube.com/xml/schemas/2015" xmlns:m="http://search.yahoo.com/mrss">
+  <title>订阅标题</title>
+  <author><name>订阅作者</name></author>
+  <entry>
+    <id>yt:video:nostats0001</id>
+    <yt:videoId>nostats0001</yt:videoId>
+    <title>没有统计</title>
+    <link rel="alternate" href="https://www.youtube.com/watch?v=nostats0001"/>
+    <author><name>无统计频道</name></author>
+    <published>2001-01-01T00:00:00Z</published>
+    <media:group>
+      <media:description>没有播放量</media:description>
+    </media:group>
+  </entry>
+  <entry>
+    <y:videoId>namespace01</y:videoId>
+    <title>前缀无关</title>
+    <link rel="alternate" href="https://www.youtube.com/watch?v=namespace01"/>
+    <author><name>前缀频道</name></author>
+    <m:group>
+      <m:description>命名空间正文</m:description>
+      <m:statistics views="42"/>
+    </m:group>
+  </entry>
+  <entry>
+    <id>yt:video:missingid01</id>
+    <title>缺视频号</title>
+    <link rel="self" href="https://www.youtube.com/feeds/videos.xml?channel_id=UC_SYNTHETIC_WP11"/>
+    <link rel="alternate" href="https://www.youtube.com/watch?v=missingid01"/>
+  </entry>
+  <entry>
+    <yt:videoId>missinglink</yt:videoId>
+    <title>缺链接</title>
+    <link rel="self" href="https://www.youtube.com/feeds/videos.xml?channel_id=UC_SYNTHETIC_WP11"/>
+    <media:group>
+      <media:content url="https://www.youtube.com/watch?v=missinglink" type="text/html"/>
+      <media:content url="https://www.youtube.com/v/missinglink?version=3" type="application/x-shockwave-flash"/>
+      <media:thumbnail url="https://i.ytimg.com/vi/missinglink/hqdefault.jpg"/>
+      <media:player url="https://www.youtube.com/watch?v=missinglink"/>
+    </media:group>
+  </entry>
+  <entry>
+    <title>无稳定键</title>
+  </entry>
+  <entry>
+    <yt:videoId>staronly001</yt:videoId>
+    <title>只有星级</title>
+    <link rel="alternate" href="https://www.youtube.com/watch?v=staronly001"/>
+    <author><name>星级频道</name></author>
+    <media:group>
+      <media:community>
+        <media:starRating count="50" average="5.00" min="1" max="5"/>
+      </media:community>
+    </media:group>
+  </entry>
+</feed>

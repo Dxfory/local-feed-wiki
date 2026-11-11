@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "second-brain"
+version = "0.3.0"
+description = "Local sorter for public feeds. Keeps raw evidence and regenerates a static wiki."
+requires-python = ">=3.13"
+readme = "README.md"
+dependencies = [
+    "feedparser==6.0.14",
+    "PyYAML==6.0.3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.2.0"]
+
+[project.scripts]
+second-brain = "second_brain.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+second_brain = ["classify/schema.json", "review/schema.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

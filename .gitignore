@@ -1,0 +1,22 @@
+# Runtime state at the repository root. A bare wiki/ would also hide
+# src/second_brain/wiki. Example files under config/ stay tracked.
+/raw/
+/wiki/
+/data/
+/.grok-sandbox/
+/.grok-tmp/
+/.venv/
+
+# Real configuration. The *.example.* files are the tracked templates.
+config/sources.yaml
+config/preferences.md
+config/topic_aliases.yaml
+config/runtime.yaml
+
+# Python and test caches.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+dist/
+build/

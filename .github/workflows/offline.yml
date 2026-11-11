@@ -1,0 +1,67 @@
+name: offline
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            feedparser==6.0.14 \
+            PyYAML==6.0.3 \
+            pytest==9.2.0 \
+            setuptools
+          python -c "import setuptools"
+
+      - name: Run the suite offline
+        env:
+          SECOND_BRAIN_GROK: tests/fakes/grok
+          PYTHONDONTWRITEBYTECODE: "1"
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+        run: PYTHONPATH=src python -m pytest -q
+
+  # CPython 3.13.5 is published for Ubuntu 22.04 and 24.04, not 26.04.
+  pytest-3135:
+    name: pytest (3.13.5)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13.5"
+
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            feedparser==6.0.14 \
+            PyYAML==6.0.3 \
+            pytest==9.2.0 \
+            setuptools
+          python -c "import setuptools"
+
+      - name: Run the suite offline
+        env:
+          SECOND_BRAIN_GROK: tests/fakes/grok
+          PYTHONDONTWRITEBYTECODE: "1"
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+        run: PYTHONPATH=src python -m pytest -q

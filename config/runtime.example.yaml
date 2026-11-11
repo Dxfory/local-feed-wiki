@@ -1,0 +1,14 @@
+# Call budgets for about 21 sources. They count model calls, not money.
+# Classify holds at most 8 items per batch, so 21 batches cover one batch per source.
+# Review holds at most 4 topics per batch, so 8 batches cover 32 topics.
+# Raise classify to at least the number of sources, and review to at least
+# one batch per four sources, when the list grows.
+offline: true
+live_authorized: false
+billing_path: test
+billing_path_verified: false
+tool_policy_verified: false
+review_llm: true
+max_classify_batches: 21
+max_review_batches: 8
+max_transcript_fetches: 20

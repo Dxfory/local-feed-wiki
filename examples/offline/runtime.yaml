@@ -1,0 +1,11 @@
+# Small budget for the three synthetic fixtures. A real subscription list
+# should start from config/runtime.example.yaml instead.
+offline: true
+live_authorized: false
+billing_path: test
+billing_path_verified: false
+tool_policy_verified: false
+review_llm: true
+max_classify_batches: 3
+max_review_batches: 1
+max_transcript_fetches: 20

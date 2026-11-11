@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>合成博客</title>
+    <link>https://example.com/</link>
+    <description>合成订阅，不是真实站点。</description>
+    <item>
+      <title>合成文章甲</title>
+      <link>https://example.com/posts/alpha</link>
+      <guid isPermaLink="false">alpha</guid>
+      <pubDate>Thu, 10 Jan 2030 00:00:00 +0000</pubDate>
+      <description>摘要甲</description>
+      <content:encoded><![CDATA[<p>正文甲</p><script>secret()</script>]]></content:encoded>
+    </item>
+    <item>
+      <title>合成文章乙</title>
+      <link>https://example.com/posts/beta</link>
+      <guid isPermaLink="false">beta</guid>
+      <pubDate>Sat, 12 Jan 2030 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>正文乙</p>]]></description>
+    </item>
+  </channel>
+</rss>

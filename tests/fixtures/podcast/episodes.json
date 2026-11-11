@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "guid": "episode-ready",
+      "url": "https://example.com/podcast/ready",
+      "title": "已有文稿",
+      "published_at": "2030-01-10T00:00:00.000000Z",
+      "transcript": "这是一段合成文稿。",
+      "audio_url": "https://cdn.example.com/ready.mp3",
+      "transcript_url": "file:tests/fixtures/podcast/episode.txt"
+    },
+    {
+      "guid": "episode-audio",
+      "url": "https://example.com/podcast/audio",
+      "title": "只有音频",
+      "published_at": "2030-01-11T00:00:00.000000Z",
+      "transcript": null,
+      "audio_url": "https://cdn.example.com/audio.mp3",
+      "transcript_url": null
+    }
+  ]
+}

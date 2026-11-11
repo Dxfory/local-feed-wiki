@@ -1,0 +1,12 @@
+# 一次真实 grok 冒烟。复制为 config/runtime.yaml 后再运行。该副本不入库。
+# 脚本固定写入 1 个合成来源，并用 --max-items 截断条目。计费路径保持 session。
+# 失败不自动重新登录。本文件没有凭据。
+offline: false
+live_authorized: true
+billing_path: session
+billing_path_verified: true
+tool_policy_verified: true
+review_llm: true
+max_classify_batches: 3
+max_review_batches: 3
+max_transcript_fetches: 3

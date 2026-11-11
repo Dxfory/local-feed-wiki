@@ -1,0 +1,1491 @@
+{
+  "proposition": {
+    "topic": "半导体",
+    "claim_key": "机构A|需求同比增长|2030年度|业务B",
+    "for_sentence": "2030年度业务B需求将同比增长",
+    "against_sentence": "2030年度业务B需求不会同比增长"
+  },
+  "falsify_template": "本条仅为本库材料分歧。命题：{claim_key}。请核对所列原文是否支持少数立场；若主体、时期、范围不一致，或后续同范围的公开证据否定少数句，则本候选失效。少数句：{minority_sentence}",
+  "analysis_hash": "cc1925176c55665c453534f007ece5e90405f88834060eb52440d24e856219a6",
+  "cases": [
+    {
+      "case_id": "four_for_one_against",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-d",
+          "guid": "d1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-e",
+          "guid": "e1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "opportunity",
+          "n_items": 5,
+          "n_sources": 5,
+          "n_for": 4,
+          "n_against": 1,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "minority_sentence": "2030年度业务B需求不会同比增长",
+          "minority_stance": "against",
+          "minority_items": [
+            {
+              "source_id": "source-e",
+              "guid": "e1"
+            }
+          ],
+          "majority_items": [
+            {
+              "source_id": "source-a",
+              "guid": "a1"
+            },
+            {
+              "source_id": "source-b",
+              "guid": "b1"
+            },
+            {
+              "source_id": "source-c",
+              "guid": "c1"
+            },
+            {
+              "source_id": "source-d",
+              "guid": "d1"
+            }
+          ],
+          "minority_source_ids": [
+            "source-e"
+          ],
+          "majority_source_ids": [
+            "source-a",
+            "source-b",
+            "source-c",
+            "source-d"
+          ],
+          "majority_count": 4,
+          "minority_count": 1,
+          "n_sources": 5,
+          "falsify_hint": "本条仅为本库材料分歧。命题：机构a|需求同比增长|2030年度|业务b。请核对所列原文是否支持少数立场；若主体、时期、范围不一致，或后续同范围的公开证据否定少数句，则本候选失效。少数句：2030年度业务B需求不会同比增长"
+        }
+      ]
+    },
+    {
+      "case_id": "two_items",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "insufficient",
+          "n_items": 2,
+          "n_sources": 2,
+          "n_for": 1,
+          "n_against": 1,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "tie_two_two",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-d",
+          "guid": "d1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "disputed",
+          "n_items": 4,
+          "n_sources": 4,
+          "n_for": 2,
+          "n_against": 2,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "single_source_five",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a2",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a3",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a4",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a5",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "single_source",
+          "n_items": 5,
+          "n_sources": 1,
+          "n_for": 1,
+          "n_against": 0,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "single_source_conflict",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a2",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a3",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a4",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a5",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "conflicted",
+          "n_items": 0,
+          "n_sources": 0,
+          "n_for": 0,
+          "n_against": 0,
+          "excluded_source_ids": [
+            "source-a"
+          ]
+        }
+      ],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "source_spam_four_one",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a2",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a3",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a4",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "disputed",
+          "n_items": 5,
+          "n_sources": 2,
+          "n_for": 1,
+          "n_against": 1,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "two_keys_same_topic",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|库存同比上升|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B库存将同比上升",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B库存将同比上升",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|库存同比上升|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B库存将同比上升",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B库存将同比上升",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|库存同比上升|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B库存将同比上升",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B库存将同比上升",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|库存同比上升|2030年度|业务b",
+          "status": "one_sided",
+          "n_items": 3,
+          "n_sources": 3,
+          "n_for": 3,
+          "n_against": 0,
+          "excluded_source_ids": []
+        },
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "one_sided",
+          "n_items": 3,
+          "n_sources": 3,
+          "n_for": 3,
+          "n_against": 0,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "duplicate_claims",
+      "repeat": 3,
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-d",
+          "guid": "d1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-e",
+          "guid": "e1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "opportunity",
+          "n_items": 5,
+          "n_sources": 5,
+          "n_for": 4,
+          "n_against": 1,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "minority_sentence": "2030年度业务B需求不会同比增长",
+          "minority_stance": "against",
+          "minority_items": [
+            {
+              "source_id": "source-e",
+              "guid": "e1"
+            }
+          ],
+          "majority_items": [
+            {
+              "source_id": "source-a",
+              "guid": "a1"
+            },
+            {
+              "source_id": "source-b",
+              "guid": "b1"
+            },
+            {
+              "source_id": "source-c",
+              "guid": "c1"
+            },
+            {
+              "source_id": "source-d",
+              "guid": "d1"
+            }
+          ],
+          "minority_source_ids": [
+            "source-e"
+          ],
+          "majority_source_ids": [
+            "source-a",
+            "source-b",
+            "source-c",
+            "source-d"
+          ],
+          "majority_count": 4,
+          "minority_count": 1,
+          "n_sources": 5,
+          "falsify_hint": "本条仅为本库材料分歧。命题：机构a|需求同比增长|2030年度|业务b。请核对所列原文是否支持少数立场；若主体、时期、范围不一致，或后续同范围的公开证据否定少数句，则本候选失效。少数句：2030年度业务B需求不会同比增长"
+        }
+      ]
+    },
+    {
+      "case_id": "item_conflict",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-d",
+          "guid": "d1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-e",
+          "guid": "e1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-e",
+          "guid": "e1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "one_sided",
+          "n_items": 4,
+          "n_sources": 4,
+          "n_for": 4,
+          "n_against": 0,
+          "excluded_source_ids": [
+            "source-e"
+          ]
+        }
+      ],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "comments_only_opposition",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "comment",
+          "evidence_quote": "观众摘句：不会同比增长",
+          "comment_index": 0
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "comment",
+          "evidence_quote": "观众摘句：不会同比增长",
+          "comment_index": 0
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "comment",
+          "evidence_quote": "观众摘句：不会同比增长",
+          "comment_index": 0
+        },
+        {
+          "source_id": "source-z",
+          "guid": "z1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "comment",
+          "evidence_quote": "观众摘句：不会同比增长",
+          "comment_index": 0
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "one_sided",
+          "n_items": 3,
+          "n_sources": 3,
+          "n_for": 3,
+          "n_against": 0,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "scope_period_split",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2031年度|业务C",
+          "stance": "against",
+          "sentence": "2031年度业务C需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2031年度业务C需求不会同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2031年度|业务C",
+          "stance": "against",
+          "sentence": "2031年度业务C需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2031年度业务C需求不会同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2031年度|业务C",
+          "stance": "against",
+          "sentence": "2031年度业务C需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2031年度业务C需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "one_sided",
+          "n_items": 3,
+          "n_sources": 3,
+          "n_for": 3,
+          "n_against": 0,
+          "excluded_source_ids": []
+        },
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2031年度|业务c",
+          "status": "one_sided",
+          "n_items": 3,
+          "n_sources": 3,
+          "n_for": 0,
+          "n_against": 3,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "unknown_scope",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "u1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|UNKNOWN|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "机构A|需求同比增长|UNKNOWN|业务B",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "u2",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|UNKNOWN",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "机构A|需求同比增长|2030年度|UNKNOWN",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "u3",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|Unknown|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "机构A|需求同比增长|Unknown|业务B",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "u4",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长| UNKNOWN |业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "机构A|需求同比增长| UNKNOWN |业务B",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "u5",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|unknown|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "机构A|需求同比增长|unknown|业务B",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "u6",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|ＵＮＫＮＯＷＮ|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "机构A|需求同比增长|ＵＮＫＮＯＷＮ|业务B",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "u7",
+          "topic": "半导体",
+          "claim_key": "UNKNOWN|UNKNOWN|UNKNOWN|UNKNOWN",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "UNKNOWN|UNKNOWN|UNKNOWN|UNKNOWN",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "alias_merge",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "CHIPS",
+          "claim_key": "机构A|需求同比上升|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "CHIPS",
+          "claim_key": "机构A|需求同比上升|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "CHIPS",
+          "claim_key": "机构A|需求同比上升|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-d",
+          "guid": "d1",
+          "topic": "CHIPS",
+          "claim_key": "机构A|需求同比上升|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-e",
+          "guid": "e1",
+          "topic": "CHIPS",
+          "claim_key": "机构A|需求同比上升|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "aliases": {
+        "topic_aliases": {
+          "chips": "半导体"
+        },
+        "claim_aliases": {
+          "机构A|需求同比上升|2030年度|业务B": "机构A|需求同比增长|2030年度|业务B"
+        }
+      },
+      "alias_cycle": {
+        "topic_aliases": {
+          "半导体": "芯片",
+          "芯片": "半导体"
+        }
+      },
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "opportunity",
+          "n_items": 5,
+          "n_sources": 5,
+          "n_for": 4,
+          "n_against": 1,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "minority_sentence": "2030年度业务B需求不会同比增长",
+          "minority_stance": "against",
+          "minority_items": [
+            {
+              "source_id": "source-e",
+              "guid": "e1"
+            }
+          ],
+          "majority_items": [
+            {
+              "source_id": "source-a",
+              "guid": "a1"
+            },
+            {
+              "source_id": "source-b",
+              "guid": "b1"
+            },
+            {
+              "source_id": "source-c",
+              "guid": "c1"
+            },
+            {
+              "source_id": "source-d",
+              "guid": "d1"
+            }
+          ],
+          "minority_source_ids": [
+            "source-e"
+          ],
+          "majority_source_ids": [
+            "source-a",
+            "source-b",
+            "source-c",
+            "source-d"
+          ],
+          "majority_count": 4,
+          "minority_count": 1,
+          "n_sources": 5,
+          "falsify_hint": "本条仅为本库材料分歧。命题：机构a|需求同比增长|2030年度|业务b。请核对所列原文是否支持少数立场；若主体、时期、范围不一致，或后续同范围的公开证据否定少数句，则本候选失效。少数句：2030年度业务B需求不会同比增长"
+        }
+      ]
+    },
+    {
+      "case_id": "shuffle_stable",
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "source_case_ids": [
+        "four_for_one_against",
+        "source_spam_four_one",
+        "tie_two_two"
+      ],
+      "claims": [],
+      "expected_assessments": [],
+      "expected_opportunities": []
+    },
+    {
+      "case_id": "four_against_one_for",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-d",
+          "guid": "d1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-e",
+          "guid": "e1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "opportunity",
+          "n_items": 5,
+          "n_sources": 5,
+          "n_for": 1,
+          "n_against": 4,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "minority_sentence": "2030年度业务B需求将同比增长",
+          "minority_stance": "for",
+          "minority_items": [
+            {
+              "source_id": "source-a",
+              "guid": "a1"
+            }
+          ],
+          "majority_items": [
+            {
+              "source_id": "source-b",
+              "guid": "b1"
+            },
+            {
+              "source_id": "source-c",
+              "guid": "c1"
+            },
+            {
+              "source_id": "source-d",
+              "guid": "d1"
+            },
+            {
+              "source_id": "source-e",
+              "guid": "e1"
+            }
+          ],
+          "minority_source_ids": [
+            "source-a"
+          ],
+          "majority_source_ids": [
+            "source-b",
+            "source-c",
+            "source-d",
+            "source-e"
+          ],
+          "majority_count": 4,
+          "minority_count": 1,
+          "n_sources": 5,
+          "falsify_hint": "本条仅为本库材料分歧。命题：机构a|需求同比增长|2030年度|业务b。请核对所列原文是否支持少数立场；若主体、时期、范围不一致，或后续同范围的公开证据否定少数句，则本候选失效。少数句：2030年度业务B需求将同比增长"
+        }
+      ]
+    },
+    {
+      "case_id": "repeated_direction_one_vote",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长，补充说明",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长，补充说明",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a2",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-d",
+          "guid": "d1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "opportunity",
+          "n_items": 5,
+          "n_sources": 4,
+          "n_for": 3,
+          "n_against": 1,
+          "excluded_source_ids": []
+        }
+      ],
+      "expected_opportunities": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "minority_sentence": "2030年度业务B需求不会同比增长",
+          "minority_stance": "against",
+          "minority_items": [
+            {
+              "source_id": "source-d",
+              "guid": "d1"
+            }
+          ],
+          "majority_items": [
+            {
+              "source_id": "source-a",
+              "guid": "a1"
+            },
+            {
+              "source_id": "source-a",
+              "guid": "a2"
+            },
+            {
+              "source_id": "source-b",
+              "guid": "b1"
+            },
+            {
+              "source_id": "source-c",
+              "guid": "c1"
+            }
+          ],
+          "minority_source_ids": [
+            "source-d"
+          ],
+          "majority_source_ids": [
+            "source-a",
+            "source-b",
+            "source-c"
+          ],
+          "majority_count": 3,
+          "minority_count": 1,
+          "n_sources": 4,
+          "falsify_hint": "本条仅为本库材料分歧。命题：机构a|需求同比增长|2030年度|业务b。请核对所列原文是否支持少数立场；若主体、时期、范围不一致，或后续同范围的公开证据否定少数句，则本候选失效。少数句：2030年度业务B需求不会同比增长"
+        }
+      ]
+    },
+    {
+      "case_id": "partial_conflict_insufficient",
+      "claims": [
+        {
+          "source_id": "source-a",
+          "guid": "a1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a2",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-a",
+          "guid": "a3",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-b",
+          "guid": "b1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "for",
+          "sentence": "2030年度业务B需求将同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求将同比增长",
+          "comment_index": null
+        },
+        {
+          "source_id": "source-c",
+          "guid": "c1",
+          "topic": "半导体",
+          "claim_key": "机构A|需求同比增长|2030年度|业务B",
+          "stance": "against",
+          "sentence": "2030年度业务B需求不会同比增长",
+          "evidence_kind": "body",
+          "evidence_quote": "2030年度业务B需求不会同比增长",
+          "comment_index": null
+        }
+      ],
+      "expected_assessments": [
+        {
+          "topic": "半导体",
+          "claim_key": "机构a|需求同比增长|2030年度|业务b",
+          "status": "insufficient",
+          "n_items": 2,
+          "n_sources": 2,
+          "n_for": 1,
+          "n_against": 1,
+          "excluded_source_ids": [
+            "source-a"
+          ]
+        }
+      ],
+      "expected_opportunities": []
+    }
+  ]
+}

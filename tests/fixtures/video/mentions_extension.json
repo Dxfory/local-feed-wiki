@@ -1,0 +1,9 @@
+{
+  "title": "普通句子里提到 .mp4 但不是文件",
+  "channel": "合成频道",
+  "comments": [
+    "普通句子提到 .mp4、.jpg、.png 和 .webp，不会因此去读文件。",
+    "my clip.mp4"
+  ],
+  "frame_paths": []
+}
