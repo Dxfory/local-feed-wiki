@@ -327,22 +327,39 @@ def _ensure_parent(path: Path) -> None:
 
 
 def _select_binary(policy: RuntimePolicy, root: Path) -> str:
-    raw = _grok_env()
+    if not policy.offline:
+        _require_live(policy)
+    raw = _completion_command()
     if policy.offline:
         if raw is None:
             raise ConfigError("grok_binary_required")
         return _offline_binary(_clean_binary(raw, "offline_grok_rejected"), root)
-    _require_live(policy)
     if raw is not None:
         raw = _clean_binary(raw, "invalid_grok_binary")
     return _live_binary(raw, root)
 
 
-def _grok_env() -> str | None:
-    value = os.environ.get("SECOND_BRAIN_GROK")
+def _env_text(name: str) -> str | None:
+    value = os.environ.get(name)
     if not isinstance(value, str) or value == "":
         return None
     return value
+
+
+def _completion_command() -> str | None:
+    """Primary command path, or the alias when the primary is unset.
+
+    An empty value is unset. Two different non-empty values are a conflict.
+    The same text in both variables is one path.
+    """
+
+    primary = _env_text("SECOND_BRAIN_LLM_CMD")
+    alias = _env_text("SECOND_BRAIN_GROK")
+    if primary is not None and alias is not None and primary != alias:
+        raise ConfigError("llm_cmd_conflict")
+    if primary is not None:
+        return primary
+    return alias
 
 
 def _clean_binary(raw: str, code: str) -> str:
