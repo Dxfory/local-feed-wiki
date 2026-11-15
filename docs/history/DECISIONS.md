@@ -58,7 +58,7 @@
 
 WP1 至 WP14 的决定当时只写在已合并 PR 的正文里。下面按包补记，不改写 D-WP0-01 至 D-WP0-13。PR 已有编号的沿用原号；PR 只按顺序罗列的，按正文顺序编号。
 
-### WP1 Store 与 raw（[PR #10](https://github.com/Dxfory/local-feed-wiki/pull/10)）
+### WP1 Store 与 raw（PR #10（私有开发历史））
 
 ## D-WP1-01 入库的 raw 路径
 
@@ -184,7 +184,7 @@ raw 目录、条目目录或目标文件是符号链接时抛 `StorageError("sym
 
 连接时可以给旧文件打开 WAL，这可能改写数据库头。它不改表 SQL 或行。`migrate` 仍然拒绝未知 schema。
 
-### WP2 公网 URL 与 HTTP（[PR #8](https://github.com/Dxfory/local-feed-wiki/pull/8)）
+### WP2 公网 URL 与 HTTP（PR #8（私有开发历史））
 
 ## D-WP2-01 最多三跳
 
@@ -242,7 +242,7 @@ Content-Length 超过 2 MiB、非 identity 的 Content-Encoding、不允许的�
 
 事件只存 `redact_url` 和 `hash_url`。返回的 `HttpResponse` 可以带 feed 正文，事件不带。注入的时钟在按主机等待期间不前进时，客户端抛 `clock_stalled`，不提前发送。
 
-### WP3 文字解析（[PR #2](https://github.com/Dxfory/local-feed-wiki/pull/2)）
+### WP3 文字解析（PR #2（私有开发历史））
 
 ## D-WP3-01 返回正文和固定形态
 
@@ -264,7 +264,7 @@ Content-Length 超过 2 MiB、非 identity 的 Content-Encoding、不允许的�
 
 块级和换行标签插入换行。行内标签不插入：`H<span>2</span>O` 仍是 `H2O`。去掉行内 script 或 style 不插入空格。`str.split()` 把各种 Unicode 空白折叠成一个 ASCII 空格并去掉两端。`<pre>` 同样折叠。连续 `<br>` 不保留空行。
 
-### WP4 播客文稿（[PR #4](https://github.com/Dxfory/local-feed-wiki/pull/4)）
+### WP4 播客文稿（PR #4（私有开发历史））
 
 ## D-WP4-01 空文本是 pending，损坏结构是 invalid_transcript
 
@@ -302,7 +302,7 @@ Content-Length 超过 2 MiB、非 identity 的 Content-Encoding、不允许的�
 
 `tests/fixtures/podcast/` 属于 WP10。本包不往那里加文件。
 
-### WP5 视频元数据（[PR #3](https://github.com/Dxfory/local-feed-wiki/pull/3)）
+### WP5 视频元数据（PR #3（私有开发历史））
 
 ## D-WP5-01 封闭载荷
 
@@ -324,7 +324,7 @@ Content-Length 超过 2 MiB、非 identity 的 Content-Encoding、不允许的�
 
 非空 `frame_paths` 抛 `FramesNotAllowed`。空列表、空元组、null 或缺少该键表示没有帧。其他类型（含 `""`）抛 `SchemaError("invalid_frame_paths")`。`thumbnail`、`frame`、`video_path`、`audio_path`、`poster`、`enclosure` 等名单上的键即使值为空也抛 `FramesNotAllowed`。名字不区分大小写。帧拒绝先于未知键错误。异常文本只有安全码。
 
-### WP6 grok 适配器与离线假程序（[PR #9](https://github.com/Dxfory/local-feed-wiki/pull/9)）
+### WP6 grok 适配器与离线假程序（PR #9（私有开发历史））
 
 ## D-WP6-01 假程序是文件
 
@@ -382,7 +382,7 @@ WP6 自己不写调用日志。测试记录只有假程序的 argv 日志，保�
 
 `invalid_prompt`、`invalid_schema`、`invalid_model`、`invalid_timeout`、`invalid_billing_path`、`invalid_binary`、`invalid_sandbox`、`sandbox_not_empty`、`invalid_temp_dir`、`spawn_failed`、`timeout`、`output_limit`、`invalid_json`、`invalid_envelope`、`invalid_structured_output`、`invalid_payload`、`invalid_usage`、`cli_error`、`nonzero_exit`、`unexpected_stop_reason`。计划点名的只有 `unexpected_stop_reason`。
 
-### WP7 非共识计票（[PR #5](https://github.com/Dxfory/local-feed-wiki/pull/5)）
+### WP7 非共识计票（PR #5（私有开发历史））
 
 ## D-WP7-01 规范主题和命题键
 
@@ -416,7 +416,7 @@ WP6 自己不写调用日志。测试记录只有假程序的 argv 日志，保�
 
 夹具包含 S10 的纯函数用例，另加 `four_against_one_for`、`repeated_direction_one_vote`、`partial_conflict_insufficient`。洗牌种子是 `0, 1, 2, 3, 4`，用在基线、来源刷屏和票数持平上。相等比较的是完整 `ConsensusResult` 和每个字段的规范 JSON。
 
-### WP8 多源短评（[PR #7](https://github.com/Dxfory/local-feed-wiki/pull/7)）
+### WP8 多源短评（PR #7（私有开发历史））
 
 ## D-WP8-01 至少两个不同条目才有表
 
@@ -478,7 +478,7 @@ WP6 自己不写调用日志。测试记录只有假程序的 argv 日志，保�
 
 `schema.json` 读模块旁边的文件。`pyproject.toml` 已冻结，所以没有改 package data。
 
-### WP9 分档（[PR #6](https://github.com/Dxfory/local-feed-wiki/pull/6)）
+### WP9 分档（PR #6（私有开发历史））
 
 ## D-WP9-01 提示就是一个规范 JSON
 
@@ -524,7 +524,7 @@ WP6 自己不写调用日志。测试记录只有假程序的 argv 日志，保�
 
 schema 错误使用 `SchemaError` / `InvalidBucket` / `InvalidStance` 的稳定码。之后不可用的批次复用 `GrokUnavailable` 的码。预算跳过使用 `budget_exceeded`。其他异常继续抛出。
 
-### WP10 RSS 与转写水合（[PR #11](https://github.com/Dxfory/local-feed-wiki/pull/11)）
+### WP10 RSS 与转写水合（PR #11（私有开发历史））
 
 ## D-WP10-01 文档、条目和 304
 
@@ -560,7 +560,7 @@ ElementTree 是良构性闸门。它的 `item`/`entry` 计数与 feedparser 不�
 
 走 `parse_video`。`FramesNotAllowed` 变成该条目的 `frames_not_allowed`，不使兄弟失败。
 
-### WP11 YouTube Atom（[PR #12](https://github.com/Dxfory/local-feed-wiki/pull/12)）
+### WP11 YouTube Atom（PR #12（私有开发历史））
 
 ## D-WP11-01 用 ElementTree，不用 feedparser
 
@@ -602,7 +602,7 @@ YouTube 元素使用 `http://www.youtube.com/xml/schemas/2015`，与前缀无关
 
 缺少或解析不出的 `published` 让 `published_at` 不设置，条目仍返回。未来和很旧的日期保留为规范 UTC。`updated` 不是发布时间，也不用 `fetched_at` 代替。本解析器不做回填或跨源去重。重复视频 id 保留实际建成的第一条；更早被拒绝的副本不挡住后来的有效副本（`duplicate_guid`）。记录保持文档顺序。
 
-### WP12 本地 wiki（[PR #13](https://github.com/Dxfory/local-feed-wiki/pull/13)）
+### WP12 本地 wiki（PR #13（私有开发历史））
 
 ## D-WP12-01 同一目录里的 slug 碰撞
 
@@ -660,7 +660,7 @@ YouTube 元素使用 `http://www.youtube.com/xml/schemas/2015`，与前缀无关
 
 rename、replace 或 fsync 期间的 `OSError` 变成 `PublishError("publish_io")`，消息不含路径。会逃出 wiki 的符号链接是 `PublishError("symlink_escape")`。
 
-### WP13 一次运行（[PR #14](https://github.com/Dxfory/local-feed-wiki/pull/14)）
+### WP13 一次运行（PR #14（私有开发历史））
 
 ## D-WP13-01 PublishError 的时机
 
@@ -694,7 +694,7 @@ rename、replace 或 fsync 期间的 `OSError` 变成 `PublishError("publish_io"
 
 “索引已更新、完成未执行”通过在 `publish` 返回后让 `finish_publication` 抛一次来模拟。`run_once` 没有额外的崩溃钩子。
 
-### WP14 配置、CLI 与 README（[PR #15](https://github.com/Dxfory/local-feed-wiki/pull/15)）
+### WP14 配置、CLI 与 README（PR #15（私有开发历史））
 
 ## D-WP14-01 离线是强制的
 
