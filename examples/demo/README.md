@@ -20,6 +20,16 @@ PYTHONPATH=src SECOND_BRAIN_GROK=tests/fakes/grok \
 
 That writes gitignored `data/`, `raw/`, and `wiki/` in the checkout. The clock is fixed at `2030-01-15T00:00:00Z`. Open `wiki/digest/<run-id>.html` and the matching file under `wiki/snapshots/<run-id>/opportunities/`.
 
+## Subcommand
+
+From a source checkout, with the pinned packages installed:
+
+```bash
+PYTHONPATH=src python3 -m second_brain.cli demo
+```
+
+`--out DIR` chooses the output directory. Omit it to use a new temporary directory. The directory must be missing or empty, and it must not be a symlink. The command copies this folder, `tests/fixtures/demo/`, and the offline binary into that root, then runs the offline pipeline with the clock fixed at `2030-01-15T00:00:00Z`. It prints the status line, the absolute digest HTML path, and the absolute `wiki/index.md` path. The checkout's `data/`, `raw/`, and `wiki/` stay untouched.
+
 ## Regenerate the GIF and screenshot
 
 `scripts/make_demo.sh` repeats the run in a temporary directory, then writes `docs/assets/digest.png` and `docs/assets/demo.gif`. It needs `ffmpeg` and one of `chromium`, `chromium-browser`, or `google-chrome`. It does not install packages and it does not write `data/`, `raw/`, or `wiki/` in the checkout.
