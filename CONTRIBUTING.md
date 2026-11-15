@@ -32,7 +32,7 @@ These are load-bearing. A pull request that weakens them will not be merged.
 - The import allow-list and module list in `tests/test_boundaries.py` and `tests/conftest.py`. A new import that the allow-list rejects needs a contract change, not a quieter test.
 - `src/second_brain/models.py`, `src/second_brain/errors.py`, and `src/second_brain/ports.py` are the frozen contract. Extend behavior in `config.py`, `cli.py`, or `run.py` when the existing types already carry the data.
 
-`AGENTS.md` is the short working agreement. `docs/BUILD_PLAN_CN_v3.md` is the longer implementation contract. `docs/DECISIONS.md` is append-only.
+`AGENTS.md` is the short working agreement. `docs/BUILD_PLAN_CN_v3.md` is the longer implementation contract. `docs/history/DECISIONS.md` is append-only.
 
 ## Good first issues
 
