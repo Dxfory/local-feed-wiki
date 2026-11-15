@@ -98,15 +98,23 @@ digest = wiki / relative
 if not digest.is_file() or relative.startswith("/") or ".." in Path(relative).parts:
     sys.exit("offline demo did not publish a digest")
 page = digest.read_text(encoding="utf-8")
-marker = "<h2>非共识</h2>"
-start = page.find(marker)
-if start < 0:
+labels = (
+    ("<h2>非共识</h2>", "<p>无</p>", "少数候选"),
+    ("<h2>Minority view</h2>", "<p>None</p>", "Minority candidate"),
+)
+found = []
+for heading, empty, assessment in labels:
+    start = page.find(heading)
+    if start >= 0:
+        found.append((start, heading, empty, assessment))
+if not found:
     sys.exit("digest has no minority section")
+start, marker, empty, assessment = min(found, key=lambda item: item[0])
 end = page.find("<h2>", start + len(marker))
 if end < 0:
     sys.exit("digest minority section is incomplete")
 section = page[start:end]
-if "<p>无</p>" in section or "少数候选" not in section:
+if empty in section or assessment not in section:
     sys.exit("digest minority section is empty")
 opportunities = sorted(wiki.glob("snapshots/*/opportunities/*.md"))
 if len(opportunities) != 1:
