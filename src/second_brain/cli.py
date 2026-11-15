@@ -262,14 +262,14 @@ def _lexical_absolute(raw: str) -> Path:
 
 
 def _refuse_symlinks(path: Path) -> None:
-    cursor = path
+    node = path
     while True:
-        if cursor.is_symlink():
+        if node.is_symlink():
             raise ConfigError("symlink_escape")
-        parent = cursor.parent
-        if parent == cursor:
+        parent = node.parent
+        if parent == node:
             return
-        cursor = parent
+        node = parent
 
 
 def _out_is_protected(out: Path, checkout: Path) -> bool:
