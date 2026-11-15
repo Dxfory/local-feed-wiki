@@ -1,3 +1,5 @@
+Ready-to-file issue drafts: [`docs/ISSUE_SEEDS.md`](ISSUE_SEEDS.md).
+
 # Good first issues
 
 Each item is a small change with a file to edit and a test to add. Read [`CONTRIBUTING.md`](../CONTRIBUTING.md) first.
