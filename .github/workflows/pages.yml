@@ -1,0 +1,75 @@
+# GitHub Pages is not enabled on this repository yet.
+# pull_request and push build the sample site only.
+# Deploy runs only on workflow_dispatch.
+# Enabling Pages and switching deploy to push on main is a later owner decision.
+
+name: pages
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install pinned runtime dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            feedparser==6.0.14 \
+            PyYAML==6.0.3
+
+      - name: Assemble the sample site
+        run: scripts/build_sample_site.sh _site
+
+      - name: Check sample page links
+        run: |
+          python - _site/index.html <<'PY'
+          import re
+          import sys
+          from pathlib import Path
+          from urllib.parse import urlsplit
+
+          index = Path(sys.argv[1])
+          if index.is_symlink() or not index.is_file():
+              sys.exit("missing sample index")
+          text = index.read_text(encoding="utf-8")
+          for raw in re.findall(r"https?://[^\s\"'<>)\]]+", text):
+              host = urlsplit(raw.rstrip(".,")).hostname
+              if host != "example.com":
+                  sys.exit("sample index host is not example.com")
+          PY
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment: github-pages
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
