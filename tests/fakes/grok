@@ -378,12 +378,117 @@ def _ids(items: object) -> list[str] | None:
     return found
 
 
+_DIRECTIVE = "SBDEMO1 "
+
+
+def _item_blob(item: dict[str, object]) -> str:
+    parts: list[str] = []
+    for key in ("title", "body"):
+        value = item.get(key)
+        if isinstance(value, str):
+            parts.append(value)
+    return "\n".join(parts)
+
+
+def _directive_claim(raw: object) -> dict[str, object]:
+    if not isinstance(raw, dict):
+        fail()
+    key = raw.get("claim_key")
+    sentence = raw.get("sentence")
+    stance = raw.get("stance")
+    kind = raw.get("evidence_kind")
+    quote = raw.get("evidence_quote")
+    index = raw.get("comment_index")
+    if (
+        not isinstance(key, str)
+        or not isinstance(sentence, str)
+        or not isinstance(quote, str)
+        or stance not in {"for", "against"}
+        or kind not in {"title", "body", "comment"}
+    ):
+        fail()
+    if kind == "comment":
+        if isinstance(index, bool) or not isinstance(index, int):
+            fail()
+    elif index is not None:
+        fail()
+    return {
+        "claim_key": key,
+        "sentence": sentence,
+        "stance": stance,
+        "evidence_kind": kind,
+        "evidence_quote": quote,
+        "comment_index": index,
+    }
+
+
+def _directive_row(item_id: str, blob: str) -> dict[str, object]:
+    raw = blob[blob.find(_DIRECTIVE) + len(_DIRECTIVE) :].lstrip()
+    try:
+        value, _end = json.JSONDecoder().raw_decode(raw)
+    except json.JSONDecodeError:
+        fail()
+    if not isinstance(value, dict):
+        fail()
+    topic = value.get("topic")
+    bucket = value.get("bucket")
+    reason = value.get("reason")
+    claims = value.get("claims", [])
+    if (
+        not isinstance(topic, str)
+        or not isinstance(bucket, str)
+        or not isinstance(reason, str)
+        or bucket not in {"must", "recommend", "skip"}
+        or not isinstance(claims, list)
+    ):
+        fail()
+    return {
+        "id": item_id,
+        "topic": topic,
+        "bucket": bucket,
+        "reason": reason,
+        "claims": [_directive_claim(claim) for claim in claims],
+    }
+
+
+def _directed_classify(items: object) -> dict[str, object] | None:
+    """Opt-in claims for demo fixtures.
+
+    A batch with no ``SBDEMO1`` marker returns None so the default payload
+    stays unchanged. A marked batch must carry one directive on every item.
+    """
+
+    if not isinstance(items, list) or not items:
+        return None
+    blobs: list[str] = []
+    marked = False
+    for item in items:
+        if not isinstance(item, dict):
+            return None
+        blob = _item_blob(item)
+        blobs.append(blob)
+        if _DIRECTIVE in blob:
+            marked = True
+    if not marked:
+        return None
+    built: list[dict[str, object]] = []
+    for item, blob in zip(items, blobs, strict=True):
+        item_id = item.get("id")
+        if not isinstance(item_id, str) or _DIRECTIVE not in blob:
+            fail()
+        built.append(_directive_row(item_id, blob))
+    return {"items": built}
+
+
 def demo_payload(prompt: dict[str, object]) -> dict[str, object] | None:
     task = prompt.get("task")
     if task == "classify-v3":
         ids = _ids(prompt.get("items"))
         if ids is None:
             return None
+        directed = _directed_classify(prompt.get("items"))
+        if directed is not None:
+            return directed
         return {
             "items": [
                 {

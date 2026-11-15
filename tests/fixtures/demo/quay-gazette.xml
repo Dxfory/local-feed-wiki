@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Quay Gazette</title>
+    <link>https://example.com/quay-gazette</link>
+    <description>Invented gazette notes for the offline demo.</description>
+    <item>
+      <title>Gazette notice says the noon gate stays open</title>
+      <link>https://example.com/quay-gazette/noon-gate-open-notice</link>
+      <guid isPermaLink="false">noon-gate-open-notice</guid>
+      <pubDate>Thu, 10 Jan 2030 18:00:00 +0000</pubDate>
+      <description><![CDATA[The noon gate stays open. SBDEMO1 {"topic":"Harbor water","bucket":"recommend","reason":"The gazette notice agrees the gate is open.","claims":[{"claim_key":"Harbor Board|the noon gate stays open|2030-01|inner basin","sentence":"The noon gate stays open.","stance":"for","evidence_kind":"body","evidence_quote":"The noon gate stays open.","comment_index":null}]}]]></description>
+    </item>
+    <item>
+      <title>Bell schedule for the quay</title>
+      <link>https://example.com/quay-gazette/bell-schedule</link>
+      <guid isPermaLink="false">bell-schedule</guid>
+      <pubDate>Fri, 11 Jan 2030 18:00:00 +0000</pubDate>
+      <description><![CDATA[The bell schedule for the quay was printed. SBDEMO1 {"topic":"Bell schedule","bucket":"recommend","reason":"A bell schedule with no shared proposition.","claims":[]}]]></description>
+    </item>
+  </channel>
+</rss>

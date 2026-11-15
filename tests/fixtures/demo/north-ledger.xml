@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>North Ledger</title>
+    <link>https://example.com/north-ledger</link>
+    <description>Invented ledger notes for the offline demo.</description>
+    <item>
+      <title>Ledger says the noon gate stays shut</title>
+      <link>https://example.com/north-ledger/noon-gate-shut</link>
+      <guid isPermaLink="false">noon-gate-shut</guid>
+      <pubDate>Fri, 11 Jan 2030 15:00:00 +0000</pubDate>
+      <description><![CDATA[The noon gate stays shut. SBDEMO1 {"topic":"Harbor water","bucket":"must","reason":"The ledger states the opposite on the same gate.","claims":[{"claim_key":"Harbor Board|the noon gate stays open|2030-01|inner basin","sentence":"The noon gate stays shut.","stance":"against","evidence_kind":"body","evidence_quote":"The noon gate stays shut.","comment_index":null}]}]]></description>
+    </item>
+    <item>
+      <title>Kelp lines restated for the week</title>
+      <link>https://example.com/north-ledger/kelp-lines</link>
+      <guid isPermaLink="false">kelp-lines</guid>
+      <pubDate>Sat, 12 Jan 2030 15:00:00 +0000</pubDate>
+      <description><![CDATA[The kelp lines were restated for the week. SBDEMO1 {"topic":"Kelp lines","bucket":"recommend","reason":"A kelp note with no shared proposition.","claims":[]}]]></description>
+    </item>
+    <item>
+      <title>Fog bell hours posted</title>
+      <link>https://example.com/north-ledger/fog-bell</link>
+      <guid isPermaLink="false">fog-bell</guid>
+      <pubDate>Sun, 13 Jan 2030 15:00:00 +0000</pubDate>
+      <description><![CDATA[Fog bell hours were posted for the channel. SBDEMO1 {"topic":"Fog bell","bucket":"skip","reason":"A fog-bell notice with no shared proposition.","claims":[]}]]></description>
+    </item>
+  </channel>
+</rss>

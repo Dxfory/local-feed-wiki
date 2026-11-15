@@ -1,0 +1,23 @@
+# Public starter pack. Copy entries into config/sources.yaml.
+# Plain https URLs only. No tokens and no query credentials.
+sources:
+  - id: planet-money
+    kind: podcast_rss
+    url: https://feeds.npr.org/510289/podcast.xml
+    title: Planet Money
+    backfill_days: 14
+  - id: the-indicator
+    kind: podcast_rss
+    url: https://feeds.npr.org/510325/podcast.xml
+    title: The Indicator from Planet Money
+    backfill_days: 14
+  - id: marketplace
+    kind: podcast_rss
+    url: https://feeds.publicradio.org/public_feeds/marketplace
+    title: Marketplace
+    backfill_days: 14
+  - id: marketplace-morning-report
+    kind: podcast_rss
+    url: https://feeds.publicradio.org/public_feeds/marketplace-morning-report
+    title: Marketplace Morning Report
+    backfill_days: 14
