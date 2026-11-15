@@ -328,7 +328,7 @@ cd "$root"
 
 set +e
 if [ "$mode" = offline ]; then
-  python3 "$launcher" run --offline --config-dir config --db data/smoke.sqlite --now 2030-01-15T00:00:00Z
+  python3 "$launcher" run --offline --lang zh --config-dir config --db data/smoke.sqlite --now 2030-01-15T00:00:00Z
 else
   python3 "$launcher" run --live --config-dir config --db data/smoke.sqlite
 fi

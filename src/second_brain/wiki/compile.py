@@ -66,6 +66,193 @@ SUMMARY_LABEL = {
 KIND_LABEL = {"consensus": "共同点", "difference": "差异", "audience": "观众", "limit": "限度"}
 STANCE_LABEL = {"for": "支持", "against": "反对"}
 EVIDENCE_LABEL = {"title": "标题摘句", "body": "正文摘句", "comment": "观众摘句"}
+# stage() cannot take a language. Rendering reads this selection.
+_LANG = "en"
+LABELS: dict[str, dict[str, object]] = {
+    "zh": {
+        "html_lang": "zh-CN",
+        "digest_title": "增量摘要",
+        "library": LIBRARY,
+        "empty_delta": EMPTY_DELTA,
+        "section_empty": "本节没有新的条目",
+        "pending_heading": "待转写",
+        "held_heading": "日期待确认",
+        "open_heading": "待分类/本次未完成",
+        "minority_heading": "非共识",
+        "notes_heading": "说明",
+        "footnote_heading": "脚注",
+        "none": "无",
+        "no_warnings": "没有额外警告",
+        "footnote": FOOTNOTE,
+        "time_prefix": "时间：",
+        "range_prefix": "时间范围：",
+        "source_prefix": "来源：",
+        "topic_prefix": "主题：",
+        "bucket_prefix": "分档：",
+        "published_prefix": "发布时间：",
+        "reason_prefix": "理由：",
+        "comments_heading": "观众摘句",
+        "no_comment": "未提供评论文字",
+        "link_prefix": "来源链接：",
+        "mark": "：",
+        "scope_prefix": "范围：",
+        "multi": "多源对照",
+        "single_heading": SUMMARY_LABEL["single_source"],
+        "table_header": "| 标题 | 链接 | 来源 | 发布时间 | 分档 | 理由 | 证据 |",
+        "evidence_heading": "证据",
+        "no_body": "未提供正文摘句",
+        "summary_heading": "短评",
+        "summary_basis": "仅基于本次所列选中材料",
+        "unknown_time": "发布时间未知",
+        "range_span": "{start} 至 {end}",
+        "range_extra": "，另有发布时间未知的条目",
+        "evidence_both": "正文摘句；观众摘句",
+        "evidence_comment": EVIDENCE_LABEL["comment"],
+        "evidence_body": EVIDENCE_LABEL["body"],
+        "vote_line": (
+            "- {claim}：{label}。来源票：支持 {n_for}，反对 {n_against}，"
+            "条目 {n_items}，来源 {n_sources}。"
+        ),
+        "excluded_prefix": "排除来源：",
+        "name_join": "、",
+        "opportunity_title": ASSESSMENT_LABEL["opportunity"],
+        "claim_prefix": "命题：",
+        "stance_prefix": "少数立场：",
+        "sentence_prefix": "少数句：",
+        "opportunity_votes": (
+            "来源票数：少数 {minority}，多数 {majority}，来源 {sources}，条目 {items}"
+        ),
+        "minority_sources": "少数来源",
+        "majority_sources": "多数来源",
+        "excluded_sources": "排除来源",
+        "falsify_heading": "可证伪说明",
+        "bullet_none": "- 无",
+        "status_published": "已发布",
+        "status_partial": "部分完成",
+        "index_title": "索引",
+        "index_run": "当前run_id",
+        "index_now": "当前时间",
+        "index_status": "当前状态",
+        "index_snapshot": "当前快照",
+        "index_digest": "当前摘要",
+        "index_history": "历史",
+        "bucket": BUCKET_LABEL,
+        "assessment": ASSESSMENT_LABEL,
+        "summary": SUMMARY_LABEL,
+        "kind": KIND_LABEL,
+        "stance": STANCE_LABEL,
+        "evidence": EVIDENCE_LABEL,
+    },
+    "en": {
+        "html_lang": "en",
+        "digest_title": "Digest",
+        "library": "Materials currently in this library",
+        "empty_delta": "No newly classified items this run",
+        "section_empty": "Nothing new in this section",
+        "pending_heading": "Waiting on transcript",
+        "held_heading": "Date unconfirmed",
+        "open_heading": "Unclassified / not finished",
+        "minority_heading": "Minority view",
+        "notes_heading": "Notes",
+        "footnote_heading": "Footnote",
+        "none": "None",
+        "no_warnings": "No extra warnings",
+        "footnote": (
+            "A minority page only compares how sentences are spread in this library. "
+            "It is not a market conclusion, a trade, a position, or a target price. "
+            "A majority is not a fact, and a minority is not an opportunity. "
+            "Reposts and extra accounts may still not be independent. "
+            "A short summary cannot cover the evidence for a specific fact."
+        ),
+        "time_prefix": "Time: ",
+        "range_prefix": "Time range: ",
+        "source_prefix": "Source: ",
+        "topic_prefix": "Topic: ",
+        "bucket_prefix": "Bucket: ",
+        "published_prefix": "Published: ",
+        "reason_prefix": "Reason: ",
+        "comments_heading": "Comments",
+        "no_comment": "No comment text",
+        "link_prefix": "Link: ",
+        "mark": ": ",
+        "scope_prefix": "Scope: ",
+        "multi": "Multiple sources",
+        "single_heading": "Single source",
+        "table_header": "| Title | Link | Source | Published | Bucket | Reason | Evidence |",
+        "evidence_heading": "Evidence",
+        "no_body": "No body quote",
+        "summary_heading": "Summary",
+        "summary_basis": "Based only on the items listed here",
+        "unknown_time": "Unknown publish time",
+        "range_span": "{start} to {end}",
+        "range_extra": ", plus items with an unknown publish time",
+        "evidence_both": "Body quote; comment quote",
+        "evidence_comment": "Comment quote",
+        "evidence_body": "Body quote",
+        "vote_line": (
+            "- {claim}: {label}. Votes: for {n_for}, against {n_against}, "
+            "items {n_items}, sources {n_sources}."
+        ),
+        "excluded_prefix": "Excluded sources: ",
+        "name_join": ", ",
+        "opportunity_title": "Minority candidate",
+        "claim_prefix": "Claim: ",
+        "stance_prefix": "Minority stance: ",
+        "sentence_prefix": "Minority sentence: ",
+        "opportunity_votes": (
+            "Votes: minority {minority}, majority {majority}, sources {sources}, items {items}"
+        ),
+        "minority_sources": "Minority sources",
+        "majority_sources": "Majority sources",
+        "excluded_sources": "Excluded sources",
+        "falsify_heading": "How to falsify",
+        "bullet_none": "- None",
+        "status_published": "Published",
+        "status_partial": "Partial",
+        "index_title": "Index",
+        "index_run": "Run",
+        "index_now": "Time",
+        "index_status": "Status",
+        "index_snapshot": "Snapshot",
+        "index_digest": "Digest",
+        "index_history": "History",
+        "bucket": {"must": "Must read", "recommend": "Recommended", "skip": "Skip"},
+        "assessment": {
+            "insufficient": "Too few samples",
+            "disputed": "Disputed (no minority page)",
+            "single_source": "Single source, no minority page",
+            "one_sided": "No opposing stance",
+            "conflicted": "Source conflicts with itself, excluded",
+            "opportunity": "Minority candidate",
+        },
+        "summary": {
+            "ok": "Summary",
+            "disabled": "Summary off",
+            "failed": "Summary unavailable",
+            "budget_skipped": "Budget deferred",
+            "single_source": "Single source",
+            "not_requested": "Summary not requested",
+        },
+        "kind": {
+            "consensus": "In common",
+            "difference": "Difference",
+            "audience": "Audience",
+            "limit": "Limit",
+        },
+        "stance": {"for": "For", "against": "Against"},
+        "evidence": {"title": "Title quote", "body": "Body quote", "comment": "Comment quote"},
+        "warnings": {
+            "分类预算已用完，其余延后": "Classify budget used up; the rest waits",
+            "模型不可用，未完成分类": "Model unavailable; classification incomplete",
+            "分类结果未通过校验": "Classification failed validation",
+            "文稿获取未完成": "Transcript fetch incomplete",
+            "短评不可用": "Summary unavailable",
+            "短评预算已用完": "Summary budget used up",
+            "日志尚未写入": "Log not written yet",
+            "发布未完成": "Publish did not finish",
+        },
+    },
+}
 _RUN = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 _TIME = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z$")
 _SLUG = re.compile(r"^[0-9a-f]{12}$")
@@ -138,13 +325,94 @@ class _Slugs:
         return slug
 
 
+def _select_lang(lang: str) -> None:
+    global _LANG
+    if not isinstance(lang, str) or lang not in LABELS:
+        raise PublishError("invalid_lang")
+    _LANG = lang
+
+
+def _active() -> str:
+    return _LANG
+
+
+def _phrase(lang: str, name: str) -> str:
+    value = LABELS[lang][name]
+    if not isinstance(value, str):
+        raise PublishError("invalid_lang")
+    return value
+
+
+def _t(name: str) -> str:
+    return _phrase(_active(), name)
+
+
+def _m(name: str, key: str) -> str:
+    table = LABELS[_active()][name]
+    if not isinstance(table, dict):
+        raise PublishError("invalid_lang")
+    value = table[key]
+    if not isinstance(value, str):
+        raise PublishError("invalid_lang")
+    return value
+
+
+def _shown_warning(text: str) -> str:
+    if _active() == "zh":
+        return text
+    table = LABELS["en"].get("warnings")
+    if isinstance(table, dict):
+        mapped = table.get(text)
+        if isinstance(mapped, str):
+            return mapped
+    prefix = "来源取数失败："
+    if text.startswith(prefix):
+        return "Source fetch failed: " + text[len(prefix) :]
+    return text
+
+
+def _index_spec(lang: str) -> dict[str, str]:
+    history = _phrase(lang, "index_history")
+    return {
+        "title": "# " + _phrase(lang, "index_title"),
+        "run": _phrase(lang, "index_run"),
+        "now": _phrase(lang, "index_now"),
+        "status": _phrase(lang, "index_status"),
+        "snapshot": _phrase(lang, "index_snapshot"),
+        "digest": _phrase(lang, "index_digest"),
+        "history_heading": "## " + history,
+        "history_prefix": history + ": ",
+    }
+
+
+def _display_status(status: str) -> str:
+    """Manifest status stays the stored token. English pages show a short label."""
+    if _active() == "zh":
+        return status
+    stored = {
+        _phrase("zh", "status_published"): _phrase("en", "status_published"),
+        _phrase("zh", "status_partial"): _phrase("en", "status_partial"),
+    }
+    return stored.get(status, status)
+
+
+def _known_index_status() -> frozenset[str]:
+    return frozenset(
+        _phrase(lang, name)
+        for lang in ("zh", "en")
+        for name in ("status_published", "status_partial")
+    )
+
+
 class WikiPublisher:
     """Stage, publish, and append the wiki for one run. This is the only wiki writer."""
 
-    def __init__(self, wiki_dir: Path) -> None:
+    def __init__(self, wiki_dir: Path, *, lang: str = "en") -> None:
         if not isinstance(wiki_dir, Path):
             raise PublishError("invalid_path")
+        _select_lang(lang)
         self.wiki_dir = wiki_dir
+        self.lang = lang
 
     def stage(
         self,
@@ -176,6 +444,7 @@ class WikiPublisher:
 
     def publish(self, publication: Publication) -> None:
         """Move a staged snapshot into place, then the digest, then the index."""
+        _select_lang(self.lang)
         if not isinstance(publication, Publication):
             raise SchemaError("invalid_record")
         root = self._root()
@@ -453,41 +722,42 @@ def _digest(
     grouped = {bucket: [] for bucket in ("must", "recommend", "skip")}
     for item in sorted(delta, key=lambda row: (row.source_id, row.id)):
         grouped[item.bucket].append(item)
+    title = _t("digest_title")
     parts = [
         "<!DOCTYPE html>\n",
-        '<html lang="zh-CN">\n',
+        f'<html lang="{_t("html_lang")}">\n',
         "<head>\n",
         '<meta charset="utf-8">\n',
-        f"<title>增量摘要 {_h(run_id)}</title>\n",
+        f"<title>{title} {_h(run_id)}</title>\n",
         "</head>\n",
         "<body>\n",
-        "<h1>增量摘要</h1>\n",
-        f"<p>{_h(LIBRARY)}</p>\n",
-        f"<p>时间：{_h(now)}</p>\n",
-        f"<p>时间范围：{_h(_range_text(moments))}</p>\n",
+        f"<h1>{title}</h1>\n",
+        f"<p>{_h(_t('library'))}</p>\n",
+        f"<p>{_t('time_prefix')}{_h(now)}</p>\n",
+        f"<p>{_t('range_prefix')}{_h(_range_text(moments))}</p>\n",
     ]
     for bucket in ("must", "recommend", "skip"):
-        parts.append(f"<h2>{BUCKET_LABEL[bucket]}</h2>\n")
+        parts.append(f"<h2>{_m('bucket', bucket)}</h2>\n")
         items = grouped[bucket]
         if not delta:
-            parts.append(f"<p>{EMPTY_DELTA}</p>\n")
+            parts.append(f"<p>{_t('empty_delta')}</p>\n")
         elif not items:
-            parts.append("<p>本节没有新的条目</p>\n")
+            parts.append(f"<p>{_t('section_empty')}</p>\n")
         else:
             parts.extend(_article_html(item) for item in items)
-    parts.append("<h2>待转写</h2>\n")
+    parts.append(f"<h2>{_t('pending_heading')}</h2>\n")
     parts.extend(_queue_html(item, confirmed=True) for item in _by_source(pending))
     if not pending:
-        parts.append("<p>无</p>\n")
-    parts.append("<h2>日期待确认</h2>\n")
+        parts.append(f"<p>{_t('none')}</p>\n")
+    parts.append(f"<h2>{_t('held_heading')}</h2>\n")
     parts.extend(_queue_html(item, confirmed=False) for item in _by_source(held_date))
     if not held_date:
-        parts.append("<p>无</p>\n")
-    parts.append("<h2>待分类/本次未完成</h2>\n")
+        parts.append(f"<p>{_t('none')}</p>\n")
+    parts.append(f"<h2>{_t('open_heading')}</h2>\n")
     parts.extend(_queue_html(item, confirmed=True) for item in _by_source(unclassified))
     if not unclassified:
-        parts.append("<p>无</p>\n")
-    parts.append("<h2>非共识</h2>\n")
+        parts.append(f"<p>{_t('none')}</p>\n")
+    parts.append(f"<h2>{_t('minority_heading')}</h2>\n")
     if consensus.assessments:
         parts.append("<ul>\n")
         ordered = sorted(
@@ -495,28 +765,28 @@ def _digest(
             key=lambda row: (normalize_key(row.topic), normalize_key(row.claim_key)),
         )
         for assessment in ordered:
-            label = ASSESSMENT_LABEL[assessment.status]
+            label = _m("assessment", assessment.status)
             topic = _h(assessment.topic)
             claim = _h(assessment.claim_key)
-            parts.append(f"<li>{topic} {claim}：{_h(label)}</li>\n")
+            parts.append(f"<li>{topic} {claim}{_t('mark')}{_h(label)}</li>\n")
         parts.append("</ul>\n")
     else:
-        parts.append("<p>无</p>\n")
-    parts.append("<h2>说明</h2>\n")
-    notes = [f"<li>{_h(warning)}</li>\n" for warning in warnings]
+        parts.append(f"<p>{_t('none')}</p>\n")
+    parts.append(f"<h2>{_t('notes_heading')}</h2>\n")
+    notes = [f"<li>{_h(_shown_warning(warning))}</li>\n" for warning in warnings]
     for review in sorted(reviews, key=lambda row: normalize_key(row.topic)):
         if review.summary_status == "ok":
             continue
-        label = SUMMARY_LABEL[review.summary_status]
-        notes.append(f"<li>{_h(review.topic)}：{_h(label)}</li>\n")
+        label = _m("summary", review.summary_status)
+        notes.append(f"<li>{_h(review.topic)}{_t('mark')}{_h(label)}</li>\n")
     if notes:
         parts.append("<ul>\n")
         parts.extend(notes)
         parts.append("</ul>\n")
     else:
-        parts.append("<p>没有额外警告</p>\n")
-    parts.append("<h2>脚注</h2>\n")
-    parts.append(f"<p>{_h(FOOTNOTE)}</p>\n")
+        parts.append(f"<p>{_t('no_warnings')}</p>\n")
+    parts.append(f"<h2>{_t('footnote_heading')}</h2>\n")
+    parts.append(f"<p>{_h(_t('footnote'))}</p>\n")
     parts.append("</body>\n</html>\n")
     return "".join(parts).encode("utf-8")
 
@@ -526,11 +796,11 @@ def _article_html(item: ClassifiedItem) -> str:
     return (
         "<article>\n"
         f"<h3>{_h(item.title)}</h3>\n"
-        f"<p>来源：{_h(item.source_id)}</p>\n"
-        f"<p>主题：{_h(item.topic)}</p>\n"
-        f"<p>分档：{_h(BUCKET_LABEL[item.bucket])}</p>\n"
-        f"<p>发布时间：{_h(_when(item.published_at))}</p>\n"
-        f"<p>理由：{_h(item.reason)}</p>\n"
+        f"<p>{_t('source_prefix')}{_h(item.source_id)}</p>\n"
+        f"<p>{_t('topic_prefix')}{_h(item.topic)}</p>\n"
+        f"<p>{_t('bucket_prefix')}{_h(_m('bucket', item.bucket))}</p>\n"
+        f"<p>{_t('published_prefix')}{_h(_when(item.published_at))}</p>\n"
+        f"<p>{_t('reason_prefix')}{_h(item.reason)}</p>\n"
         f"{comments}"
         f"{_link_html(item.url)}"
         "</article>\n"
@@ -539,18 +809,18 @@ def _article_html(item: ClassifiedItem) -> str:
 
 def _comment_html(comments: tuple[str, ...]) -> str:
     if not comments:
-        return "<p>观众摘句：未提供评论文字</p>\n"
+        return f"<p>{_t('comments_heading')}{_t('mark')}{_t('no_comment')}</p>\n"
     items = "".join(f"<li>{_h(comment)}</li>\n" for comment in comments)
-    return f"<p>观众摘句</p>\n<ul>\n{items}</ul>\n"
+    return f"<p>{_t('comments_heading')}</p>\n<ul>\n{items}</ul>\n"
 
 
 def _queue_html(item: Item, *, confirmed: bool) -> str:
-    when = _when(item.published_at) if confirmed else "日期待确认"
+    when = _when(item.published_at) if confirmed else _t("held_heading")
     return (
         "<article>\n"
         f"<h3>{_h(item.title)}</h3>\n"
-        f"<p>来源：{_h(item.source_id)}</p>\n"
-        f"<p>发布时间：{_h(when)}</p>\n"
+        f"<p>{_t('source_prefix')}{_h(item.source_id)}</p>\n"
+        f"<p>{_t('published_prefix')}{_h(when)}</p>\n"
         f"{_link_html(item.url)}"
         "</article>\n"
     )
@@ -562,8 +832,8 @@ def _topic_markdown(page: _TopicBucket) -> bytes:
     lines = [
         f"# {_md(page.topic)}",
         "",
-        f"范围：{LIBRARY}",
-        f"时间范围：{_range_text(moments)}",
+        f"{_t('scope_prefix')}{_t('library')}",
+        f"{_t('range_prefix')}{_range_text(moments)}",
         "",
     ]
     rows = ()
@@ -571,11 +841,12 @@ def _topic_markdown(page: _TopicBucket) -> bytes:
         rows = tuple(sorted(review.rows, key=lambda row: (row.source_id, row.id)))
     if review is not None and rows:
         sources = {row.source_id for row in rows}
-        lines.append(f"## {'多源对照' if len(sources) >= 2 else '单源材料汇总'}")
+        heading = _t("multi") if len(sources) >= 2 else _t("single_heading")
+        lines.append(f"## {heading}")
         lines.append("")
         lines.extend(
             [
-                "| 标题 | 链接 | 来源 | 发布时间 | 分档 | 理由 | 证据 |",
+                _t("table_header"),
                 "| --- | --- | --- | --- | --- | --- | --- |",
             ]
         )
@@ -589,7 +860,7 @@ def _topic_markdown(page: _TopicBucket) -> bytes:
                         _md_link(row.title, row.url, pipe=True),
                         _md(row.source_id, pipe=True),
                         _md(_when(row.published_at), pipe=True),
-                        BUCKET_LABEL[row.bucket],
+                        _m("bucket", row.bucket),
                         _md(row.reason, pipe=True),
                         evidence,
                     )
@@ -597,49 +868,54 @@ def _topic_markdown(page: _TopicBucket) -> bytes:
                 + " |"
             )
         lines.append("")
-        lines.append("## 观众摘句")
+        lines.append(f"## {_t('comments_heading')}")
         lines.append("")
         for row in rows:
             if row.comments:
                 for comment in row.comments:
-                    lines.append(f"- {_md(row.title)}：{_md(comment)}")
+                    lines.append(f"- {_md(row.title)}{_t('mark')}{_md(comment)}")
             else:
-                lines.append(f"- {_md(row.title)}：未提供评论文字")
+                lines.append(f"- {_md(row.title)}{_t('mark')}{_t('no_comment')}")
         lines.append("")
-        lines.append("## 证据")
+        lines.append(f"## {_t('evidence_heading')}")
         lines.append("")
         wrote = False
         for row in rows:
             for claim in row.claims:
                 wrote = True
-                kind = EVIDENCE_LABEL[claim.evidence_kind]
-                lines.append(f"- {_md(row.title)} {kind}：{_md(claim.evidence_quote)}")
+                kind = _m("evidence", claim.evidence_kind)
+                lines.append(f"- {_md(row.title)} {kind}{_t('mark')}{_md(claim.evidence_quote)}")
         if not wrote:
-            lines.append("未提供正文摘句")
+            lines.append(_t("no_body"))
         lines.append("")
-        lines.append("## 短评")
+        lines.append(f"## {_t('summary_heading')}")
         lines.append("")
-        lines.append(SUMMARY_LABEL[review.summary_status])
+        lines.append(_m("summary", review.summary_status))
         if review.sentences:
-            lines.append("仅基于本次所列选中材料")
+            lines.append(_t("summary_basis"))
             for sentence in review.sentences:
-                lines.append(f"- {KIND_LABEL[sentence.kind]}：{_md(sentence.text)}")
+                lines.append(f"- {_m('kind', sentence.kind)}{_t('mark')}{_md(sentence.text)}")
         lines.append("")
-    lines.append("## 非共识")
+    lines.append(f"## {_t('minority_heading')}")
     lines.append("")
     if not page.assessments:
-        lines.append("无")
+        lines.append(_t("none"))
     for assessment in page.assessments:
-        label = ASSESSMENT_LABEL[assessment.status]
+        label = _m("assessment", assessment.status)
         lines.append(
-            f"- {_md(assessment.claim_key)}：{label}。"
-            f"来源票：支持 {assessment.n_for}，反对 {assessment.n_against}，"
-            f"条目 {assessment.n_items}，来源 {assessment.n_sources}。"
+            _t("vote_line").format(
+                claim=_md(assessment.claim_key),
+                label=label,
+                n_for=assessment.n_for,
+                n_against=assessment.n_against,
+                n_items=assessment.n_items,
+                n_sources=assessment.n_sources,
+            )
         )
         if assessment.excluded_source_ids:
-            names = "、".join(_md(source) for source in assessment.excluded_source_ids)
-            lines.append(f"排除来源：{names}")
-    lines.extend(["", "## 脚注", "", FOOTNOTE, ""])
+            names = _t("name_join").join(_md(source) for source in assessment.excluded_source_ids)
+            lines.append(f"{_t('excluded_prefix')}{names}")
+    lines.extend(["", f"## {_t('footnote_heading')}", "", _t("footnote"), ""])
     return _text(lines)
 
 
@@ -656,46 +932,48 @@ def _opportunity_markdown(
         row = items_by_id.get(item_id)
         involved.append(None if row is None else row.published_at)
     lines = [
-        "# 少数候选",
+        f"# {_t('opportunity_title')}",
         "",
-        f"范围：{LIBRARY}",
-        f"时间范围：{_range_text(involved)}",
+        f"{_t('scope_prefix')}{_t('library')}",
+        f"{_t('range_prefix')}{_range_text(involved)}",
         "",
-        f"命题：{_md(opportunity.claim_key)}",
-        f"主题：{_md(opportunity.topic)}",
-        f"少数立场：{STANCE_LABEL[opportunity.minority_stance]}",
-        f"少数句：{_md(opportunity.minority_sentence)}",
-        (
-            f"来源票数：少数 {opportunity.minority_count}，多数 {opportunity.majority_count}，"
-            f"来源 {opportunity.n_sources}，条目 {n_items}"
+        f"{_t('claim_prefix')}{_md(opportunity.claim_key)}",
+        f"{_t('topic_prefix')}{_md(opportunity.topic)}",
+        f"{_t('stance_prefix')}{_m('stance', opportunity.minority_stance)}",
+        f"{_t('sentence_prefix')}{_md(opportunity.minority_sentence)}",
+        _t("opportunity_votes").format(
+            minority=opportunity.minority_count,
+            majority=opportunity.majority_count,
+            sources=opportunity.n_sources,
+            items=n_items,
         ),
         "",
-        "## 少数来源",
+        f"## {_t('minority_sources')}",
         "",
         *_side_lines(opportunity.minority_item_ids, items_by_id),
         "",
-        "## 多数来源",
+        f"## {_t('majority_sources')}",
         "",
         *_side_lines(opportunity.majority_item_ids, items_by_id),
         "",
-        "## 排除来源",
+        f"## {_t('excluded_sources')}",
         "",
     ]
     excluded = () if assessment is None else assessment.excluded_source_ids
     if excluded:
         lines.extend(f"- {_md(source)}" for source in excluded)
     else:
-        lines.append("- 无")
+        lines.append(_t("bullet_none"))
     lines.extend(
         [
             "",
-            "## 可证伪说明",
+            f"## {_t('falsify_heading')}",
             "",
             _md(opportunity.falsify_hint),
             "",
-            "## 脚注",
+            f"## {_t('footnote_heading')}",
             "",
-            FOOTNOTE,
+            _t("footnote"),
             "",
         ]
     )
@@ -704,7 +982,7 @@ def _opportunity_markdown(
 
 def _side_lines(item_ids: tuple[str, ...], items_by_id: dict[str, ClassifiedItem]) -> list[str]:
     if not item_ids:
-        return ["- 无"]
+        return [_t("bullet_none")]
     lines = []
     ordered = sorted(
         item_ids,
@@ -994,42 +1272,55 @@ def _render_index(
     status: str,
     history: tuple[tuple[str, str], ...],
 ) -> str:
+    spec = _index_spec(_active())
+    shown = _display_status(status)
     lines = [
-        "# 索引",
+        spec["title"],
         "",
-        f"当前run_id: {run_id}",
-        f"当前时间: {now}",
-        f"当前状态: {status}",
-        f"当前快照: snapshots/{run_id}/",
-        f"当前摘要: digest/{run_id}.html",
+        f"{spec['run']}: {run_id}",
+        f"{spec['now']}: {now}",
+        f"{spec['status']}: {shown}",
+        f"{spec['snapshot']}: snapshots/{run_id}/",
+        f"{spec['digest']}: digest/{run_id}.html",
         "",
-        "## 历史",
+        spec["history_heading"],
         "",
     ]
-    lines.extend(f"历史: {moment} {run}" for moment, run in history)
+    lines.extend(f"{spec['history_prefix']}{moment} {run}" for moment, run in history)
     lines.append("")
     return "\n".join(lines)
 
 
 def _parse_index(text: str) -> tuple[str, str, str, tuple[tuple[str, str], ...]]:
     lines = text.splitlines()
-    if len(lines) < 11 or lines[0] != "# 索引" or lines[1] != "":
+    if len(lines) < 11 or lines[1] != "":
         raise PublishError("invalid_index")
-    run_id = _index_field(lines[2], "当前run_id")
-    now = _index_field(lines[3], "当前时间")
-    status = _index_field(lines[4], "当前状态")
-    if lines[5] != f"当前快照: snapshots/{run_id}/" or lines[6] != f"当前摘要: digest/{run_id}.html":
+    spec = None
+    for lang in ("zh", "en"):
+        candidate = _index_spec(lang)
+        if lines[0] == candidate["title"]:
+            spec = candidate
+            break
+    if spec is None:
         raise PublishError("invalid_index")
-    if lines[7] != "" or lines[8] != "## 历史" or lines[9] != "":
+    run_id = _index_field(lines[2], spec["run"])
+    now = _index_field(lines[3], spec["now"])
+    status = _index_field(lines[4], spec["status"])
+    snapshot = f"{spec['snapshot']}: snapshots/{run_id}/"
+    digest = f"{spec['digest']}: digest/{run_id}.html"
+    if lines[5] != snapshot or lines[6] != digest:
         raise PublishError("invalid_index")
-    known_status = status in {"已发布", "部分完成"}
+    if lines[7] != "" or lines[8] != spec["history_heading"] or lines[9] != "":
+        raise PublishError("invalid_index")
+    known_status = status in _known_index_status()
     if _RUN.fullmatch(run_id) is None or _TIME.fullmatch(now) is None or not known_status:
         raise PublishError("invalid_index")
     history: list[tuple[str, str]] = []
+    prefix = spec["history_prefix"]
     for line in lines[10:]:
-        if not line.startswith("历史: "):
+        if not line.startswith(prefix):
             raise PublishError("invalid_index")
-        moment, separator, run = line[len("历史: ") :].partition(" ")
+        moment, separator, run = line[len(prefix) :].partition(" ")
         if separator != " " or _TIME.fullmatch(moment) is None or _RUN.fullmatch(run) is None:
             raise PublishError("invalid_index")
         history.append((moment, run))
@@ -1174,26 +1465,26 @@ def _range_text(values: Sequence[str | None]) -> str:
     known = sorted(value for value in values if value is not None)
     unknown = any(value is None for value in values)
     if not known:
-        return "发布时间未知"
-    text = f"{known[0]} 至 {known[-1]}"
+        return _t("unknown_time")
+    text = _t("range_span").format(start=known[0], end=known[-1])
     if unknown:
-        text += "，另有发布时间未知的条目"
+        text += _t("range_extra")
     return text
 
 
 def _when(value: str | None) -> str:
-    return "发布时间未知" if value is None else value
+    return _t("unknown_time") if value is None else value
 
 
 def _evidence_cell(row: ClassifiedItem) -> str:
     kinds = {claim.evidence_kind for claim in row.claims}
     if "comment" in kinds and ({"title", "body"} & kinds or row.comments):
-        return "正文摘句；观众摘句"
+        return _t("evidence_both")
     if "comment" in kinds or row.comments:
-        return "观众摘句"
+        return _t("evidence_comment")
     if kinds:
-        return "正文摘句"
-    return "未提供评论文字"
+        return _t("evidence_body")
+    return _t("no_comment")
 
 
 def _h(text: str) -> str:
@@ -1216,9 +1507,10 @@ def _md_link(text: str, url: str, *, pipe: bool) -> str:
 
 def _link_html(url: str) -> str:
     shown = _h(url)
+    prefix = _t("link_prefix")
     if _href_ok(url):
-        return f'<p>来源链接：<a href="{shown}">{shown}</a></p>\n'
-    return f"<p>来源链接：{shown}</p>\n"
+        return f'<p>{prefix}<a href="{shown}">{shown}</a></p>\n'
+    return f"<p>{prefix}{shown}</p>\n"
 
 
 def _href_ok(url: str) -> bool:

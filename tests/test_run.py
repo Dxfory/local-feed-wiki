@@ -204,6 +204,7 @@ class Lab:
             lock_path=self.lock,
             http=http,
             fixture_reader=self.reader,
+            lang="zh",
         )
 
 

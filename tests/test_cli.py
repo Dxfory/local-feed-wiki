@@ -29,6 +29,8 @@ DEMO = [
     "--offline",
     "--config-dir",
     "examples/offline",
+    "--lang",
+    "zh",
     "--now",
     "2030-01-15T00:00:00Z",
     "--db",
@@ -36,7 +38,8 @@ DEMO = [
 ]
 HELP = (
     "usage: python3 -m second_brain.cli run [--offline | --live] "
-    "[--example-config] [--config-dir DIR] [--db PATH] [--now TIMESTAMP] [--root PATH]\n"
+    "[--example-config] [--config-dir DIR] [--db PATH] [--lang en|zh] "
+    "[--now TIMESTAMP] [--root PATH]\n"
     "PYTHONPATH=src SECOND_BRAIN_GROK=tests/fakes/grok "
     "python3 -m second_brain.cli run --offline --config-dir examples/offline "
     "--now 2030-01-15T00:00:00Z --db data/second_brain.sqlite\n"
@@ -361,6 +364,8 @@ sources:
         [
             "run",
             "--offline",
+            "--lang",
+            "zh",
             "--now",
             "2030-01-15T00:00:00Z",
             "--db",
@@ -626,6 +631,8 @@ sources:
         [
             "run",
             "--offline",
+            "--lang",
+            "zh",
             "--config-dir",
             "config-partial",
             "--now",
