@@ -3,14 +3,18 @@
 ``python -m second_brain.cli`` and the ``second-brain`` script both call
 ``main``. The project root is ``--root``, then ``SECOND_BRAIN_ROOT``, then
 ``config.PROJECT_ROOT``. It does not follow the working directory unless
-that override is relative.
+that override is relative. ``demo`` copies the English offline demo into
+``--out`` and runs it there, so the checkout's ``data``, ``raw``, and
+``wiki`` stay untouched.
 """
 
 from __future__ import annotations
 
 import os
 import re
+import shutil
 import sys
+import tempfile
 import time
 import uuid
 from collections.abc import Sequence
@@ -40,8 +44,11 @@ _LOG_WARNING = "日志尚未写入"
 _VALUE_FLAGS = {"--config-dir": "config_dir", "--db": "db", "--now": "now", "--root": "root"}
 _USAGE = (
     "usage: python3 -m second_brain.cli run [--offline | --live] "
-    "[--example-config] [--config-dir DIR] [--db PATH] [--now TIMESTAMP] [--root PATH]"
+    "[--example-config] [--config-dir DIR] [--db PATH] [--now TIMESTAMP] [--root PATH]\n"
+    "       python3 -m second_brain.cli demo [--out DIR]"
 )
+_DEMO_NOW = "2030-01-15T00:00:00Z"
+_DEMO_CLEAR = ("SECOND_BRAIN_GROK_SCENARIO", "SECOND_BRAIN_GROK_ARGV_LOG")
 _DEMO = (
     "PYTHONPATH=src SECOND_BRAIN_GROK=tests/fakes/grok "
     "python3 -m second_brain.cli run --offline --config-dir examples/offline "
@@ -89,8 +96,9 @@ class _Clock:
 def main(argv: Sequence[str] | None = None) -> int:
     """Run one command. Return 0, 2, or 1.
 
-    No subcommand, and ``--help``, print the usage line and the offline
-    demo command, then return 0. An unknown command still returns 1.
+    No arguments, and ``--help``, print usage and the offline run example,
+    then return 0. ``demo`` copies the English offline demo into ``--out``
+    and runs it there. An unknown command still returns 1.
     """
 
     if argv is None:
@@ -99,6 +107,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         if _is_help(argv):
             sys.stdout.write(_USAGE + "\n" + _DEMO + "\n")
             return 0
+        if _is_demo(argv):
+            return _demo(_parse_demo(argv))
         return _run(_parse(argv))
     except (
         ConfigError,
@@ -200,7 +210,217 @@ def _parse(argv: Sequence[str]) -> _Request:
     )
 
 
+def _is_demo(argv: Sequence[str]) -> bool:
+    if isinstance(argv, (str, bytes)) or not isinstance(argv, Sequence):
+        return False
+    items = tuple(argv)
+    if not items or any(not isinstance(item, str) for item in items):
+        return False
+    return items[0] == "demo"
+
+
+def _parse_demo(argv: Sequence[str]) -> str | None:
+    items = tuple(argv)
+    out: str | None = None
+    index = 1
+    while index < len(items):
+        item = items[index]
+        if item != "--out" or out is not None:
+            raise ConfigError("unknown_argument")
+        index += 1
+        if index >= len(items) or items[index].startswith("-"):
+            raise ConfigError("missing_value")
+        out = items[index]
+        index += 1
+    return out
+
+
+def _demo(out_text: str | None) -> int:
+    checkout = _checkout_root()
+    out = _prepare_out(out_text, checkout)
+    _stage_demo(checkout, out)
+    report = _run_demo_pipeline(out)
+    _write_report(report)
+    _write_demo_paths(out, report)
+    return _exit_code(report)
+
+
+def _checkout_root() -> Path:
+    root = Path(__file__).resolve().parents[2]
+    if not root.is_dir():
+        raise ConfigError("demo_source_missing")
+    return root
+
+
+def _lexical_absolute(raw: str) -> Path:
+    if raw == "" or raw != raw.strip() or "\x00" in raw or "\\" in raw:
+        raise ConfigError("invalid_path")
+    path = Path(raw)
+    if not path.is_absolute():
+        path = Path.cwd() / path
+    return Path(os.path.normpath(os.fspath(path)))
+
+
+def _refuse_symlinks(path: Path) -> None:
+    node = path
+    while True:
+        if node.is_symlink():
+            raise ConfigError("symlink_escape")
+        parent = node.parent
+        if parent == node:
+            return
+        node = parent
+
+
+def _out_is_protected(out: Path, checkout: Path) -> bool:
+    checkout_abs = Path(os.path.normpath(checkout))
+    if out == checkout_abs:
+        return True
+    for name in ("data", "raw", "wiki"):
+        protected = checkout_abs / name
+        if out == protected or _inside(protected, out):
+            return True
+    return False
+
+
+def _prepare_out(raw: str | None, checkout: Path) -> Path:
+    if raw is None:
+        created = Path(tempfile.mkdtemp(prefix="second-brain-demo-"))
+        try:
+            _refuse_symlinks(created)
+            if _out_is_protected(created, checkout):
+                raise ConfigError("demo_out_protected")
+        except BaseException:
+            shutil.rmtree(created, ignore_errors=True)
+            raise
+        return created
+    path = _lexical_absolute(raw)
+    _refuse_symlinks(path)
+    if _out_is_protected(path, checkout):
+        raise ConfigError("demo_out_protected")
+    if path.exists():
+        if not path.is_dir():
+            raise ConfigError("invalid_path")
+        if any(path.iterdir()):
+            raise ConfigError("demo_out_not_empty")
+    else:
+        path.mkdir(parents=True)
+        if path.is_symlink() or not path.is_dir():
+            raise ConfigError("invalid_path")
+    return path
+
+
+def _stage_demo(checkout: Path, out: Path) -> None:
+    _copy_regular_tree(checkout / "examples" / "demo", out / "examples" / "demo")
+    _copy_regular_tree(checkout / "tests" / "fixtures" / "demo", out / "tests" / "fixtures" / "demo")
+    _place_binary(checkout / "tests" / "fakes" / "grok", out / "tests" / "fakes" / "grok")
+    _offline_binary("tests/fakes/grok", out)
+
+
+def _copy_regular_tree(src: Path, dst: Path) -> None:
+    if src.is_symlink():
+        raise ConfigError("symlink_escape")
+    if not src.is_dir():
+        raise ConfigError("demo_source_missing")
+    if dst.exists() or dst.is_symlink():
+        raise ConfigError("demo_out_not_empty")
+    dst.mkdir(parents=True)
+    for child in src.iterdir():
+        target = dst / child.name
+        if child.is_symlink():
+            raise ConfigError("symlink_escape")
+        if child.is_dir():
+            _copy_regular_tree(child, target)
+        elif child.is_file():
+            shutil.copy2(child, target)
+        else:
+            raise ConfigError("invalid_path")
+
+
+def _place_binary(src: Path, dst: Path) -> None:
+    if src.is_symlink() or not src.is_file():
+        raise ConfigError("offline_grok_rejected")
+    if dst.exists() or dst.is_symlink():
+        raise ConfigError("demo_out_not_empty")
+    parent = dst.parent
+    if parent.is_symlink():
+        raise ConfigError("symlink_escape")
+    parent.mkdir(parents=True, exist_ok=True)
+    if parent.is_symlink() or not parent.is_dir():
+        raise ConfigError("symlink_escape")
+    try:
+        os.link(src, dst)
+    except OSError:
+        shutil.copy2(src, dst)
+    if dst.is_symlink() or not dst.is_file():
+        raise ConfigError("offline_grok_rejected")
+    try:
+        same_source = os.path.samefile(dst, src)
+    except OSError:
+        same_source = False
+    if not same_source and not os.access(dst, os.X_OK):
+        os.chmod(dst, src.stat().st_mode | 0o111)
+
+
+def _run_demo_pipeline(out: Path) -> RunReport:
+    saved = _push_demo_env()
+    try:
+        return _execute(
+            _Request(
+                offline=True,
+                example=False,
+                config_dir="examples/demo",
+                db="data/second_brain.sqlite",
+                now=parse_timestamp(_DEMO_NOW),
+                root=os.fspath(out),
+            )
+        )
+    finally:
+        _pop_demo_env(saved)
+
+
+def _push_demo_env() -> dict[str, str | None]:
+    saved: dict[str, str | None] = {"SECOND_BRAIN_GROK": os.environ.get("SECOND_BRAIN_GROK")}
+    os.environ["SECOND_BRAIN_GROK"] = "tests/fakes/grok"
+    for key in _DEMO_CLEAR:
+        saved[key] = os.environ.get(key)
+        os.environ.pop(key, None)
+    return saved
+
+
+def _pop_demo_env(saved: dict[str, str | None]) -> None:
+    for key, value in saved.items():
+        if value is None:
+            os.environ.pop(key, None)
+        else:
+            os.environ[key] = value
+
+
+def _write_demo_paths(out: Path, report: RunReport) -> None:
+    relative = report.html_path
+    if not isinstance(relative, str) or relative == "" or relative.startswith("/"):
+        return
+    parts = Path(relative).parts
+    if not parts or any(part in {"", ".", ".."} for part in parts):
+        return
+    wiki = out / "wiki"
+    html = wiki.joinpath(*parts)
+    index = wiki / "index.md"
+    if not _inside(wiki, html) or not _inside(wiki, index):
+        return
+    if html.is_symlink() or index.is_symlink() or not html.is_file() or not index.is_file():
+        return
+    sys.stdout.write(os.fspath(html.resolve()) + "\n")
+    sys.stdout.write(os.fspath(index.resolve()) + "\n")
+
+
 def _run(request: _Request) -> int:
+    report = _execute(request)
+    _write_report(report)
+    return _exit_code(report)
+
+
+def _execute(request: _Request) -> RunReport:
     root = _root(request.root)
     loaded = config.load_config(
         _under(root, request.config_dir),
@@ -238,8 +458,7 @@ def _run(request: _Request) -> int:
         )
     finally:
         store.close()
-    _write_report(report)
-    return _exit_code(report)
+    return report
 
 
 def _root(override: str | None) -> Path:
