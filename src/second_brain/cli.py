@@ -40,7 +40,8 @@ _LOG_WARNING = "日志尚未写入"
 _VALUE_FLAGS = {"--config-dir": "config_dir", "--db": "db", "--now": "now", "--root": "root"}
 _USAGE = (
     "usage: python3 -m second_brain.cli run [--offline | --live] "
-    "[--example-config] [--config-dir DIR] [--db PATH] [--now TIMESTAMP] [--root PATH]"
+    "[--example-config] [--config-dir DIR] [--db PATH] [--lang en|zh] "
+    "[--now TIMESTAMP] [--root PATH]"
 )
 _DEMO = (
     "PYTHONPATH=src SECOND_BRAIN_GROK=tests/fakes/grok "
@@ -57,6 +58,7 @@ class _Request:
     db: str
     now: datetime | None
     root: str | None
+    lang: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -145,6 +147,7 @@ def _parse(argv: Sequence[str]) -> _Request:
     db = "data/second_brain.sqlite"
     now_text: str | None = None
     root_text: str | None = None
+    lang = "en"
     config_dir_set = False
     index = 1
     while index < len(items):
@@ -159,6 +162,16 @@ def _parse(argv: Sequence[str]) -> _Request:
             offline_flag = False
         elif item == "--example-config":
             example = True
+        elif item == "--lang":
+            index += 1
+            if index >= len(items):
+                raise ConfigError("missing_value")
+            value = items[index]
+            if value.startswith("-"):
+                raise ConfigError("missing_value")
+            if value not in {"en", "zh"}:
+                raise ConfigError("invalid_lang")
+            lang = value
         elif item in _VALUE_FLAGS:
             index += 1
             if index >= len(items):
@@ -197,6 +210,7 @@ def _parse(argv: Sequence[str]) -> _Request:
         db=db,
         now=frozen,
         root=root_text,
+        lang=lang,
     )
 
 
@@ -235,6 +249,7 @@ def _run(request: _Request) -> int:
             lock_path=lock,
             http=http,
             fixture_reader=_fixture_reader(root),
+            lang=request.lang,
         )
     finally:
         store.close()

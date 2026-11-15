@@ -242,7 +242,7 @@ def _case(topic: str, spec: tuple[tuple[str, str], ...]) -> list[ClassifiedItem]
 def test_html_labels_and_pending(tmp_path: Path) -> None:
     _reset()
     wiki = tmp_path / "wiki"
-    publisher = WikiPublisher(wiki)
+    publisher = WikiPublisher(wiki, lang="zh")
     with pytest.raises(TypeError):
         publisher.stage(  # type: ignore[misc]
             "run-html-1",
@@ -389,7 +389,7 @@ def test_assessment_labels_are_distinct(tmp_path: Path) -> None:
     }
     assert consensus.opportunities == ()
     wiki = tmp_path / "wiki"
-    publisher = WikiPublisher(wiki)
+    publisher = WikiPublisher(wiki, lang="zh")
     publication = publisher.stage(
         run_id="run-labels",
         now=NOW,
@@ -438,7 +438,7 @@ def test_digest_escapes_untrusted_text(tmp_path: Path) -> None:
     bad = _row("alpha", "转义", title=title, reason=reason, comments=(comment,), url=good)
     peer = _row("beta", "转义", title="对照标题", reason="普通理由", url=other)
     wiki = tmp_path / "wiki"
-    publisher = WikiPublisher(wiki)
+    publisher = WikiPublisher(wiki, lang="zh")
     publication = publisher.stage(
         run_id="run-escape",
         now=NOW,
@@ -500,7 +500,7 @@ def test_snapshot_removes_stale_current_opportunity(tmp_path: Path) -> None:
     assert len(first.opportunities) == 1
     assert first.opportunities[0].minority_sentence == AGAINST
     wiki = tmp_path / "wiki"
-    publisher = WikiPublisher(wiki)
+    publisher = WikiPublisher(wiki, lang="zh")
     older = publisher.stage(
         run_id="run-old",
         now=NOW,
@@ -565,7 +565,7 @@ def test_snapshot_removes_stale_current_opportunity(tmp_path: Path) -> None:
 def test_publish_idempotence_and_collision(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     _reset()
     wiki = tmp_path / "wiki"
-    publisher = WikiPublisher(wiki)
+    publisher = WikiPublisher(wiki, lang="zh")
     rows = [
         _row("alpha", "阅读", title="稳定标题", bucket="must"),
         _row("beta", "阅读", title="稳定对照", bucket="recommend"),
@@ -711,7 +711,7 @@ def test_index_never_points_to_partial_snapshot(tmp_path: Path, monkeypatch: pyt
     def _prepare(folder: Path) -> tuple[Path, WikiPublisher, object, bytes]:
         folder.mkdir(parents=True)
         wiki = folder / "wiki"
-        publisher = WikiPublisher(wiki)
+        publisher = WikiPublisher(wiki, lang="zh")
         old_rows = [_row("old-a", "旧主题", title="旧甲"), _row("old-b", "旧主题", title="旧乙")]
         old = publisher.stage(
             run_id="run-old",
@@ -847,7 +847,7 @@ def test_index_never_points_to_partial_snapshot(tmp_path: Path, monkeypatch: pyt
 def test_append_log_once_per_complete_block(tmp_path: Path) -> None:
     _reset()
     wiki = tmp_path / "wiki"
-    publisher = WikiPublisher(wiki)
+    publisher = WikiPublisher(wiki, lang="zh")
     raw = f"https://feeds.example.com/a.xml?token={SECRET}"
     fetch = FetchEvent(
         source_id="alpha",

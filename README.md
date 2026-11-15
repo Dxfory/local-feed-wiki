@@ -28,8 +28,8 @@ status=success classified=3 inserted=4 updated=0 pending=1 deferred=0 html=diges
 The digest then says, in short:
 
 - Recommended: 合成文章甲 and 合成文章乙 from `example-blog`, and 已有文稿 from `example-podcast`. Each card carries the source id, the topic 离线, the reason 离线合成结果, and an `https://example.com/...` link.
-- Waiting on a transcript: 只有音频, because the fixture has audio and no text.
-- Must-read, skip, and minority sections are empty for this tiny fixture.
+- Waiting on transcript: 只有音频, because the fixture has audio and no text.
+- Must read, Skip, and Minority view are empty for this tiny fixture.
 - The footer repeats the limit: a minority page only compares sentences in the library.
 
 `wiki/index.md` points at that digest and at `snapshots/<run_id>/`.
@@ -49,7 +49,7 @@ PYTHONPATH=src SECOND_BRAIN_GROK=tests/fakes/grok \
   --db data/second_brain.sqlite
 ```
 
-Open `wiki/index.md`, then the HTML path printed as `html=`. `data/`, `raw/`, `wiki/`, `.grok-sandbox/`, and `.grok-tmp/` are local run state. They are gitignored.
+Open `wiki/index.md`, then the HTML path printed as `html=`. Labels are English unless you pass `--lang zh`. `data/`, `raw/`, `wiki/`, `.grok-sandbox/`, and `.grok-tmp/` are local run state. They are gitignored.
 
 The project root is the checkout that contains `src/second_brain`. Override it with `--root PATH` or with a non-empty `SECOND_BRAIN_ROOT`. A relative override is resolved from the current working directory and is not followed if it is a symlink. The root itself must be a real directory.
 
@@ -147,7 +147,7 @@ Starter tasks are listed in [`docs/GOOD_FIRST_ISSUES.md`](docs/GOOD_FIRST_ISSUES
 status=success classified=3 inserted=4 updated=0 pending=1 deferred=0 html=digest/18fc0fe4723c4e2bb91a5144e87900f3.html
 ```
 
-摘要的大意是：
+默认不加 `--lang` 时标题是英文。下面是 `--lang zh` 的中文标题：
 
 - 推荐阅读：`example-blog` 的合成文章甲、合成文章乙，以及 `example-podcast` 的已有文稿。每条带有来源 id、主题「离线」、理由「离线合成结果」，以及 `https://example.com/...` 链接。
 - 待转写：只有音频。夹具里有音频、没有文字。
@@ -165,7 +165,7 @@ python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install feedparser==6.0.14 PyYAML==6.0.3
 PYTHONPATH=src SECOND_BRAIN_GROK=tests/fakes/grok \
-  python3 -m second_brain.cli run --offline \
+  python3 -m second_brain.cli run --offline --lang zh \
   --config-dir examples/offline \
   --now 2030-01-15T00:00:00Z \
   --db data/second_brain.sqlite

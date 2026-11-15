@@ -184,6 +184,7 @@ def run_once(
     lock_path: Path,
     http: HttpClient | None,
     fixture_reader: FixtureReader,
+    lang: str = "en",
 ) -> RunReport:
     """Run one pass. Hold lock_path until return, and do not delete that file.
 
@@ -203,6 +204,7 @@ def run_once(
             raw_dir=raw_dir,
             http=http,
             fixture_reader=fixture_reader,
+            lang=lang,
         )
     finally:
         _release(fd)
@@ -243,6 +245,7 @@ def _locked(
     raw_dir: Path,
     http: HttpClient | None,
     fixture_reader: FixtureReader,
+    lang: str,
 ) -> RunReport:
     _validate(
         store,
@@ -256,7 +259,7 @@ def _locked(
         fixture_reader=fixture_reader,
     )
     store.migrate()
-    publisher = WikiPublisher(wiki_dir)
+    publisher = WikiPublisher(wiki_dir, lang=lang)
     recovered_at = format_timestamp(clock.now())
     _recover_publications(store, publisher, recovered_at)
     store.recover_interrupted_runs(now=recovered_at)
