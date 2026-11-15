@@ -1,0 +1,26 @@
+# Synthetic English demo. Item files stay under tests/fixtures/demo/.
+sources:
+  - id: harbor-watch
+    kind: file
+    file_format: rss
+    url: file:tests/fixtures/demo/harbor-watch.xml
+    title: Harbor Watch
+    backfill_days: 14
+  - id: north-ledger
+    kind: file
+    file_format: rss
+    url: file:tests/fixtures/demo/north-ledger.xml
+    title: North Ledger
+    backfill_days: 14
+  - id: field-notes
+    kind: file
+    file_format: rss
+    url: file:tests/fixtures/demo/field-notes.xml
+    title: Field Notes
+    backfill_days: 14
+  - id: quay-gazette
+    kind: file
+    file_format: rss
+    url: file:tests/fixtures/demo/quay-gazette.xml
+    title: Quay Gazette
+    backfill_days: 14

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Harbor Watch</title>
+    <link>https://example.com/harbor-watch</link>
+    <description>Invented harbor notes for the offline demo.</description>
+    <item>
+      <title>East dock says the noon gate stays open</title>
+      <link>https://example.com/harbor-watch/noon-gate-open-east</link>
+      <guid isPermaLink="false">noon-gate-open-east</guid>
+      <pubDate>Tue, 08 Jan 2030 15:00:00 +0000</pubDate>
+      <description><![CDATA[The noon gate stays open. SBDEMO1 {"topic":"Harbor water","bucket":"recommend","reason":"East dock records the gate as open at noon.","claims":[{"claim_key":"Harbor Board|the noon gate stays open|2030-01|inner basin","sentence":"The noon gate stays open.","stance":"for","evidence_kind":"body","evidence_quote":"The noon gate stays open.","comment_index":null}]}]]></description>
+    </item>
+    <item>
+      <title>West dock says the noon gate stays open</title>
+      <link>https://example.com/harbor-watch/noon-gate-open-west</link>
+      <guid isPermaLink="false">noon-gate-open-west</guid>
+      <pubDate>Wed, 09 Jan 2030 15:00:00 +0000</pubDate>
+      <description><![CDATA[The noon gate stays open. SBDEMO1 {"topic":"Harbor water","bucket":"recommend","reason":"West dock records the same open gate.","claims":[{"claim_key":"Harbor Board|the noon gate stays open|2030-01|inner basin","sentence":"The noon gate stays open.","stance":"for","evidence_kind":"body","evidence_quote":"The noon gate stays open.","comment_index":null}]}]]></description>
+    </item>
+    <item>
+      <title>Pier bolts checked after the storm</title>
+      <link>https://example.com/harbor-watch/pier-bolts</link>
+      <guid isPermaLink="false">pier-bolts</guid>
+      <pubDate>Thu, 10 Jan 2030 15:00:00 +0000</pubDate>
+      <description><![CDATA[The pier bolts were checked after the storm. SBDEMO1 {"topic":"Pier bolts","bucket":"recommend","reason":"A pier note with no shared proposition.","claims":[]}]]></description>
+    </item>
+  </channel>
+</rss>

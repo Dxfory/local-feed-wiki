@@ -1,0 +1,23 @@
+# Public starter pack. Copy entries into config/sources.yaml.
+# Plain https URLs only. No tokens and no query credentials.
+sources:
+  - id: hacker-news
+    kind: rss
+    url: https://hnrss.org/frontpage
+    title: Hacker News
+    backfill_days: 14
+  - id: lobsters
+    kind: rss
+    url: https://lobste.rs/rss
+    title: Lobsters
+    backfill_days: 14
+  - id: changelog
+    kind: podcast_rss
+    url: https://changelog.com/podcast/feed
+    title: The Changelog
+    backfill_days: 14
+  - id: software-engineering-radio
+    kind: podcast_rss
+    url: https://feeds.feedburner.com/se-radio
+    title: Software Engineering Radio
+    backfill_days: 14

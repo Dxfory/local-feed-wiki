@@ -1,0 +1,28 @@
+# Public starter pack. Copy entries into config/sources.yaml.
+# Plain https URLs only. No tokens and no query credentials.
+sources:
+  - id: arxiv-cs-ai
+    kind: rss
+    url: https://rss.arxiv.org/rss/cs.AI
+    title: arXiv cs.AI
+    backfill_days: 14
+  - id: arxiv-cs-lg
+    kind: rss
+    url: https://rss.arxiv.org/rss/cs.LG
+    title: arXiv cs.LG
+    backfill_days: 14
+  - id: arxiv-cs-cl
+    kind: rss
+    url: https://rss.arxiv.org/rss/cs.CL
+    title: arXiv cs.CL
+    backfill_days: 14
+  - id: bair-blog
+    kind: rss
+    url: https://bair.berkeley.edu/blog/feed.xml
+    title: BAIR Blog
+    backfill_days: 14
+  - id: cmu-ml-blog
+    kind: rss
+    url: https://blog.ml.cmu.edu/feed/
+    title: CMU Machine Learning Blog
+    backfill_days: 14
