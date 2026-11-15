@@ -60,6 +60,17 @@ max_transcript_fetches: 0
 _ALIASES = "topic_aliases: {}\nclaim_aliases: {}\n"
 
 
+def _split_heading(text: str, headings: tuple[str, ...], end: str) -> str:
+    for heading in headings:
+        if heading in text:
+            return text.split(heading, 1)[1].split(end, 1)[0]
+    raise AssertionError(headings)
+
+
+def _has_label(text: str, labels: tuple[str, ...]) -> None:
+    assert any(label in text for label in labels), labels
+
+
 def _fields(stdout: str) -> dict[str, str]:
     line = stdout.strip("\n")
     assert "\n" not in line and line != ""
@@ -119,18 +130,32 @@ def test_demo_run_publishes_minority_comparison(
     assert "East dock says the noon gate stays open" in page
     assert "Ledger says the noon gate stays shut" in page
     assert "https://example.com/north-ledger/noon-gate-shut" in page
-    minority = page.split("<h2>非共识</h2>\n", 1)[1].split("<h2>", 1)[0]
+    minority = _split_heading(
+        page,
+        ("<h2>非共识</h2>\n", "<h2>Minority view</h2>\n"),
+        "<h2>",
+    )
     assert "<p>无</p>" not in minority
+    assert "<p>None</p>" not in minority
     assert "<ul>" in minority
-    assert "少数候选" in minority
+    _has_label(minority, ("少数候选", "Minority candidate"))
     assert "the noon gate stays open" in minority
     opportunities = list((tmp_path / "wiki").glob("snapshots/*/opportunities/*.md"))
     assert len(opportunities) == 1
     comparison = opportunities[0].read_text(encoding="utf-8")
-    assert "来源票数：少数 1，多数 3，来源 4，条目 5" in comparison
-    assert "少数句：The noon gate stays shut." in comparison
-    assert "## 少数来源" in comparison
-    assert "## 多数来源" in comparison
+    _has_label(
+        comparison,
+        (
+            "来源票数：少数 1，多数 3，来源 4，条目 5",
+            "Votes: minority 1, majority 3, sources 4, items 5",
+        ),
+    )
+    _has_label(
+        comparison,
+        ("少数句：The noon gate stays shut.", "Minority sentence: The noon gate stays shut."),
+    )
+    _has_label(comparison, ("## 少数来源", "## Minority sources"))
+    _has_label(comparison, ("## 多数来源", "## Majority sources"))
     assert "north-ledger" in comparison
     assert "harbor-watch" in comparison
     assert "field-notes" in comparison
